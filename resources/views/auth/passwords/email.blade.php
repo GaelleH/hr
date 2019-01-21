@@ -1,47 +1,37 @@
-@extends('layouts.app')
+@extends('layouts.login')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+<div class="limiter">
+	<div class="row">
+		<div class="container-login100">
+			<div class="wrap-login100 p-t-50 p-b-90">
+				<form class="login100-form validate-form flex-sb flex-w" method="POST" action="{{ route('password.email') }}">
+					{{ csrf_field() }}
 
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+					<span class="login100-form-title p-b-51" style="text-align:center">Reset password</span>
 
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
-                        {{ csrf_field() }}
+					<div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} wrap-input100 validate-input m-b-16" data-validate = "Email is required">
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
+						<input id="email" type="email" class="form-control input100" name="email" value="{{ old('email') }}" placeholder="Email" required autofocus>
+						<span class="focus-input100"></span>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+						@if ($errors->has('email'))
+							<span class="help-block">
+								<strong>{{ $errors->first('email') }}</strong>
+							</span>
+						@endif
+					</div>
 
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+					{{-- <div class="form-group"> --}}
+						<div class="container-login100-form-btn m-t-17">
+							<button type="submit" class="login100-form-btn">
+								Send Reset Password Link
+							</button>
+						</div>
+					{{-- </div> --}}
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 @endsection
