@@ -8,6 +8,12 @@
             <p>Dashboard</p>
         </a>
     </li>
+    <li class="active">
+        <a href="{{ route('users.index')}}">
+            <i class="pe-7s-users"></i>
+            <p>Gebruikers</p>
+        </a>
+    </li>
 </ul>
 @endsection
 

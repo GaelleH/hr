@@ -17,4 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::resource('users', 'UserController');
+
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changePassword');
