@@ -100,6 +100,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Rol</label>
+                                        <div>{{ $role->name }}</div>
                                     </div>
                                 </div>
                             </div>

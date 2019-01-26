@@ -53,7 +53,11 @@
                                             <td><a href="users/{{$user->id}}">{{ $user->gsm }}</a></td>
                                         @endif
                                         <td><a href="users/{{$user->id}}">{{ $user->email }}</a></td>
-                                        <td><a href="users/{{$user->id}}">rol</a></td>
+                                        @foreach($roles as $role)
+                                            @if($user->id == $role->user_id)
+                                                <td><a href="users/{{$user->id}}">{{ $role->name }}</a></td>
+                                            @endif
+                                        @endforeach
                                     </tr>
                                     @endforeach
                                     {{ $users->links() }}

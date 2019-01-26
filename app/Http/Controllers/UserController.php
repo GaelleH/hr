@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use DB;
 
 class UserController extends Controller
@@ -15,7 +16,11 @@ class UserController extends Controller
      */
     public function index()
     {
+        $roles = DB::table('users_roles')
+            ->join('roles', 'users_roles.role_id', '=', 'roles.id')
+            ->get();
         $users = User::orderBy('id', 'asc')->paginate(10);
+        view()->share('roles', $roles);
 
         return view('users.index')->with('users', $users);
     }
@@ -70,7 +75,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $role = DB::table('users_roles')
+            ->join('roles', 'users_roles.role_id', '=', 'roles.id')
+            ->where('user_id', $id)
+            ->first();
+        // $test = Role::with('users')->where('user_id', $id)->first();
         $user = User::find($id);
+        view()->share('role', $role);
+
         return view('users.show')->with('user', $user);
     }
 
