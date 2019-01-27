@@ -100,16 +100,36 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Rol</label>
-                                        <div>{{ $role->name }}</div>
+                                        @foreach($user->roles as $role)
+                                            <div>{{ $role->name }}</div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
-                            <form method="POST" action="{{ route('users.destroy', $user->id) }}">
-                                    {{ csrf_field() }}
-                                    {{ method_field('DELETE') }}
-                                <button class="btn btn-default btn-fill pull-right">Verwijderen</button>
-                            </form>
-                            <a href="{{$user->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
+                            @role('management')
+                                <form method="POST" action="{{ route('users.destroy', $user->id) }}">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                    <button class="btn btn-default btn-fill pull-right">Verwijderen</button>
+                                </form>
+                            @endrole
+                            @role('developer')
+                                <form method="POST" action="{{ route('users.destroy', $user->id) }}">
+                                        {{ csrf_field() }}
+                                        {{ method_field('DELETE') }}
+                                    <button class="btn btn-default btn-fill pull-right">Verwijderen</button>
+                                </form>
+                            @endrole
+                            @if(auth::user()->id == $user->id)
+                                <a href="{{$user->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
+                            @else
+                                @role('developer')
+                                    <a href="{{$user->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
+                                @endrole
+                                @role('management')
+                                    <a href="{{$user->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
+                                @endrole
+                            @endif
                             <div class="clearfix"></div>
                         </div>
                     </div>

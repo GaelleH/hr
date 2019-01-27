@@ -102,6 +102,11 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Rol</label>
+                                            <select class="form-control" name="role_id" id="role_id">
+                                                @foreach ($roles as $role)
+                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>

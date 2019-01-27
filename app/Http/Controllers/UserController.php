@@ -16,11 +16,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $roles = DB::table('users_roles')
-            ->join('roles', 'users_roles.role_id', '=', 'roles.id')
-            ->get();
-        $users = User::orderBy('id', 'asc')->paginate(10);
-        view()->share('roles', $roles);
+        // $roles = DB::table('users_roles')
+        //     ->join('roles', 'users_roles.role_id', '=', 'roles.id')
+        //     ->get();
+        $users = User::with('roles')->orderBy('id', 'asc')->paginate(10);
+        // view()->share('roles', $roles);
 
         return view('users.index')->with('users', $users);
     }
@@ -32,6 +32,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $roles = Role::all();
+        view()->share('roles', $roles);
+
         return view('users.create');
     }
 
@@ -48,6 +51,7 @@ class UserController extends Controller
             'name' => 'required',
             'national_register' => 'required',
             'contract_start_date' => 'required',
+            'role_id' => 'required',
         ]);
 
         //Create setting
@@ -64,6 +68,8 @@ class UserController extends Controller
         $user->color = $request->input('color');
         $user->save();
 
+        $user->roles()->attach($request->role_id);
+
         return redirect('/users')->with('succes', 'Nieuwe gebruiker toegevoegd');
     }
 
@@ -75,13 +81,12 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $role = DB::table('users_roles')
-            ->join('roles', 'users_roles.role_id', '=', 'roles.id')
-            ->where('user_id', $id)
-            ->first();
+        // $role = DB::table('users_roles')
+        //     ->join('roles', 'users_roles.role_id', '=', 'roles.id')
+        //     ->where('user_id', $id)
+        //     ->first();
         // $test = Role::with('users')->where('user_id', $id)->first();
-        $user = User::find($id);
-        view()->share('role', $role);
+        $user = User::with('roles')->find($id);
 
         return view('users.show')->with('user', $user);
     }
@@ -95,6 +100,8 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = User::find($id);
+        $roles = Role::all();
+        view()->share('roles', $roles);
 
         return view('users.edit')->with('user', $user);
     }
@@ -113,9 +120,11 @@ class UserController extends Controller
             'name' => 'required',
             'national_register' => 'required',
             'contract_start_date' => 'required',
+            'role_id' => 'required',
         ]);
 
         $user = User::find($id);
+        $user->roles()->detach();
         $user->first_name = $request->input('first_name');
         $user->name = $request->input('name');
         $user->tel = $request->input('tel');
@@ -127,6 +136,10 @@ class UserController extends Controller
         $user->contract_start_date = $request->input('contract_start_date');
         $user->color = $request->input('color');
         $user->save();
+
+        // $role = Role::with('users')->where('user_id', $id)->get();
+
+        $user->roles()->attach($request->role_id);
 
         return redirect('/users')->with('succes', 'De gebruiker werd aangepast');
     }

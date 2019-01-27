@@ -113,6 +113,24 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Rol</label>
+                                        @role('management')
+                                        <select class="form-control" name="role_id" id="role_id">
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @else
+                                            <div>U hebt niet de rechten om dit veld aan te passen</div>
+                                        @endrole
+                                        @role('developer')
+                                        <select class="form-control" name="role_id" id="role_id">
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @else
+                                            <div>U hebt niet de rechten om dit veld aan te passen</div>
+                                        @endrole
                                     </div>
                                 </div>
                             </div>
