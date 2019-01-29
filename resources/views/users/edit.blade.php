@@ -14,6 +14,12 @@
             <p>Gebruikers</p>
         </a>
     </li>
+    <li>
+        <a href="{{ route('user_functions.index')}}">
+            <i class="pe-7s-headphones"></i>
+            <p>Functies</p>
+        </a>
+    </li>
 </ul>
 @endsection
 
@@ -25,7 +31,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Nieuwe gebruiker</h4>
+                        <h4 class="title">Gebruiker aanpassen</h4>
                     </div>
                     <div class="content">
                         <form method="POST" action="{{ route('users.update', $user) }}">

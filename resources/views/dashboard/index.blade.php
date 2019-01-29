@@ -8,10 +8,16 @@
             <p>Dashboard</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('users.index')}}">
             <i class="pe-7s-users"></i>
             <p>Gebruikers</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('user_functions.index')}}">
+            <i class="pe-7s-headphones"></i>
+            <p>Functies</p>
         </a>
     </li>
 </ul>

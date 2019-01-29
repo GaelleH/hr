@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\UserFunction;
 use Illuminate\Http\Request;
+use DB;
 
 class UserFunctionController extends Controller
 {
@@ -14,7 +15,9 @@ class UserFunctionController extends Controller
      */
     public function index()
     {
-        //
+        $functions = UserFunction::orderBy('id', 'asc')->paginate(10);
+        
+        return view('functions.index')->with('functions', $functions);
     }
 
     /**
@@ -24,7 +27,7 @@ class UserFunctionController extends Controller
      */
     public function create()
     {
-        //
+        return view('functions.create');
     }
 
     /**
@@ -35,7 +38,16 @@ class UserFunctionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        //Create setting
+        $function = new UserFunction;
+        $function->name = $request->input('name');
+        $function->save();
+
+        return redirect('/user_functions')->with('succes', 'Nieuwe functie toegevoegd');
     }
 
     /**
@@ -44,9 +56,11 @@ class UserFunctionController extends Controller
      * @param  \App\UserFunction  $userFunction
      * @return \Illuminate\Http\Response
      */
-    public function show(UserFunction $userFunction)
+    public function show($id)
     {
-        //
+        $function = UserFunction::find($id);
+
+        return view('functions.show')->with('function', $function);
     }
 
     /**
@@ -55,9 +69,11 @@ class UserFunctionController extends Controller
      * @param  \App\UserFunction  $userFunction
      * @return \Illuminate\Http\Response
      */
-    public function edit(UserFunction $userFunction)
+    public function edit($id)
     {
-        //
+        $function = UserFunction::find($id);
+
+        return view('functions.edit')->with('function', $function);
     }
 
     /**
@@ -67,9 +83,17 @@ class UserFunctionController extends Controller
      * @param  \App\UserFunction  $userFunction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserFunction $userFunction)
+    public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required',
+        ]);
+
+        $function = UserFunction::find($id);
+        $function->name = $request->input('name');
+        $function->save();
+
+        return redirect('/user_functions')->with('succes', 'De functie werd aangepast');
     }
 
     /**
@@ -78,8 +102,11 @@ class UserFunctionController extends Controller
      * @param  \App\UserFunction  $userFunction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserFunction $userFunction)
+    public function destroy($id)
     {
-        //
+        $function = UserFunction::find($id);
+        $function->delete();
+
+        return redirect('/user_functions')->with('succes', 'De functie werd verwijderd');
     }
 }
