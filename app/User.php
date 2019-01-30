@@ -11,6 +11,11 @@ class User extends Authenticatable
 {
     use Notifiable, HasPermissionsTrait;
 
+    public function scopeSearch($query, $s) {
+        return $query->where('name', 'like', '%' .$s. '%')
+        ->orWhere('first_name', 'like', '%' .$s. '%');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

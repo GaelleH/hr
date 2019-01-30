@@ -14,13 +14,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // return view('browse.index', compact('users'));
         // $roles = DB::table('users_roles')
         //     ->join('roles', 'users_roles.role_id', '=', 'roles.id')
         //     ->get();
-        $users = User::with('roles')->orderBy('id', 'asc')->paginate(10);
-        // view()->share('roles', $roles);
+        $s = $request->input('s');
+        $users = User::with('roles')
+            ->search($s)
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+        view()->share('s', $s);
 
         return view('users.index')->with('users', $users);
     }
