@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
+use App\UserFunction;
 use App\Role;
 use DB;
 
@@ -38,6 +41,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
+        $functions = UserFunction::all();
+        view()->share('functions', $functions);
         view()->share('roles', $roles);
 
         return view('users.create');
@@ -49,15 +54,16 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        $this->validate($request, [
-            'first_name' => 'required',
-            'name' => 'required',
-            'national_register' => 'required',
-            'contract_start_date' => 'required',
-            'role_id' => 'required',
-        ]);
+        // $this->validate($request, [
+        //     'first_name' => 'required',
+        //     'name' => 'required',
+        //     'national_register' => 'required',
+        //     'contract_start_date' => 'required',
+        //     'role_id' => 'required',
+        // ]);
+        $validated = $request->validated();
 
         //Create setting
         $user = new User;
@@ -71,6 +77,7 @@ class UserController extends Controller
         $user->national_register = $request->input('national_register');
         $user->contract_start_date = $request->input('contract_start_date');
         $user->color = $request->input('color');
+        $user->user_function_id = $request->input('user_function_id');
         $user->save();
 
         $user->roles()->attach($request->role_id);
@@ -106,6 +113,8 @@ class UserController extends Controller
     {
         $user = User::find($id);
         $roles = Role::all();
+        $functions = UserFunction::all();
+        view()->share('functions', $functions);
         view()->share('roles', $roles);
 
         return view('users.edit')->with('user', $user);
@@ -118,7 +127,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         $this->validate($request, [
             'first_name' => 'required',
@@ -140,6 +149,7 @@ class UserController extends Controller
         $user->national_register = $request->input('national_register');
         $user->contract_start_date = $request->input('contract_start_date');
         $user->color = $request->input('color');
+        $user->user_function_id = $request->input('user_function_id');
         $user->save();
 
         // $role = Role::with('users')->where('user_id', $id)->get();

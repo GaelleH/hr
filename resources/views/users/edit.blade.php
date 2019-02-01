@@ -116,6 +116,8 @@
                                         <input type="text" class="form-control" name="color" id="color" placeholder="Kleur" value="{{ $user->color }}">
                                     </div>
                                 </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Rol</label>
@@ -125,8 +127,6 @@
                                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
                                             @endforeach
                                         </select>
-                                        @else
-                                            <div>U hebt niet de rechten om dit veld aan te passen</div>
                                         @endrole
                                         @role('developer')
                                         <select class="form-control" name="role_id" id="role_id">
@@ -134,8 +134,25 @@
                                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
                                             @endforeach
                                         </select>
-                                        @else
-                                            <div>U hebt niet de rechten om dit veld aan te passen</div>
+                                        @endrole
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Functie</label>
+                                        @role('management')
+                                        <select class="form-control" name="user_function_id" id="user_function_id">
+                                            @foreach ($functions as $function)
+                                            <option value="{{ $function->id }}">{{ $function->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @endrole
+                                        @role('developer')
+                                        <select class="form-control" name="user_function_id" id="user_function_id">
+                                            @foreach ($functions as $function)
+                                                <option value="{{ $function->id }}">{{ $function->name }}</option>
+                                            @endforeach
+                                        </select>
                                         @endrole
                                     </div>
                                 </div>

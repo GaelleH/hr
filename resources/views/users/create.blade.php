@@ -105,12 +105,24 @@
                                             <input type="text" class="form-control" name="color" id="color" placeholder="Kleur">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Rol</label>
+                                                <select class="form-control" name="role_id" id="role_id">
+                                                    @foreach ($roles as $role)
+                                                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Rol</label>
-                                            <select class="form-control" name="role_id" id="role_id">
-                                                @foreach ($roles as $role)
-                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                            <label>Functie</label>
+                                            <select class="form-control" name="user_function_id" id="user_function_id">
+                                                @foreach ($functions as $function)
+                                                    <option value="{{ $function->id }}">{{ $function->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
