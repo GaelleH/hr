@@ -19,7 +19,8 @@ Auth::routes();
 
 Route::resources([
     'users' => 'UserController',
-    'user_functions' => 'UserFunctionController'
+    'user_functions' => 'UserFunctionController',
+    'absences' => 'AbscencesYearController',
 ]);
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');

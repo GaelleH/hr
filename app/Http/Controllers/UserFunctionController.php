@@ -8,6 +8,7 @@ use DB;
 
 class UserFunctionController extends Controller
 {
+    //TODO: make pivot table
     /**
      * Display a listing of the resource.
      *

@@ -144,7 +144,9 @@ class UserController extends Controller
         $user->tel = $request->input('tel');
         $user->gsm = $request->input('gsm');
         $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password'));
+        if (!empty($request->input('password'))){
+            $user->password = bcrypt($request->input('password'));
+        }
         $user->birth_date = $request->input('birth_date');
         $user->national_register = $request->input('national_register');
         $user->contract_start_date = $request->input('contract_start_date');

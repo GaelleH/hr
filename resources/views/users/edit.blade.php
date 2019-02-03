@@ -8,6 +8,12 @@
             <p>Dashboard</p>
         </a>
     </li>
+    <li>
+        <a href="{{ route('absences.index')}}">
+            <i class="pe-7s-drawer"></i>
+            <p>Verlofjaren</p>
+        </a>
+    </li>
     <li class="active">
         <a href="{{ route('users.index')}}">
             <i class="pe-7s-users"></i>
@@ -73,7 +79,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group">
+                                    {{-- <div class="form-group">
                                         <label>Paswoord</label>
                                         @if (Auth::user()->id == $user->id)
                                         <div>
@@ -86,6 +92,11 @@
                                             </small>
                                         </div>
                                         @endif
+                                    </div> --}}
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="password" class="form-control" name="password" id="password" placeholder="Paswoord">
+                                        <small>Laat dit veld leeg om het paswoord niet te veranderen.</small>
                                     </div>
                                 </div>
                             </div>
