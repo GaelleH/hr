@@ -73,9 +73,9 @@
                                     <tr>
                                         <td><a href="absences/{{$year->id}}">{{ $year->id }}</a></td>
                                         <td><a href="absences/{{$year->id}}">{{ $year->year }}</a></td>
-                                        {{-- @foreach($users as $user)
+                                        @foreach($year->users as $user)
                                             <td><a href="absences/{{$year->id}}">{{ $user->first_name }} {{ $user->name }}</a></td>
-                                        @endforeach --}}
+                                        @endforeach
                                         <td><a href="absences/{{$year->id}}">{{ $year->official_leave_hours }}</a></td>
                                         <td><a href="absences/{{$year->id}}">{{ $year->extra_leave_hours }}</a></td>
                                     </tr>

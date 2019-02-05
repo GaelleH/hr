@@ -25,6 +25,7 @@ class AbscencesYearController extends Controller
             ->search($s)
             ->orderBy('id', 'asc')
             ->paginate(10);
+
         view()->share('s', $s);
         return view('abscences.index')->with('years', $years);
     }
@@ -57,10 +58,11 @@ class AbscencesYearController extends Controller
         //Create setting
         $year = new AbsencesYear;
         $year->official_leave_hours = $request->input('official_leave_hours');
-        $year->user_id = $request->input('user_id');
         $year->year = $request->input('year');
         $year->extra_leave_hours = $request->input('extra_leave_hours');
         $year->save();
+
+        $user->users()->attach($request->user_id);
 
         return redirect('/absences')->with('succes', 'Een nieuw verlofjaar werd toegevoegd');
     }
@@ -71,9 +73,11 @@ class AbscencesYearController extends Controller
      * @param  \App\AbsencesYear  $absencesYear
      * @return \Illuminate\Http\Response
      */
-    public function show(AbsencesYear $absencesYear)
+    public function show($id)
     {
-        //
+        $year = AbsencesYear::with('users')->find($id);
+
+        return view('abscences.show')->with('year', $year);
     }
 
     /**
@@ -82,10 +86,15 @@ class AbscencesYearController extends Controller
      * @param  \App\AbsencesYear  $absencesYear
      * @return \Illuminate\Http\Response
      */
-    public function edit(AbsencesYear $absencesYear)
+    public function edit(AbsencesYear $absencesYear, $id)
     {
-        //
-    }
+        $year = AbsencesYear::all();
+        $users = User::all();
+        dump($year);
+        dump($id);
+        view()->share('users', $users);
+
+        return view('abscences.edit')->with('year', $year);    }
 
     /**
      * Update the specified resource in storage.
