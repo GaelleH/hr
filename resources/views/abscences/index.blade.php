@@ -15,6 +15,12 @@
         </a>
     </li>
     <li>
+        <a href="{{ route('absence-types.index')}}">
+            <i class="pe-7s-ticket"></i>
+            <p>Afwezigheidstypes</p>
+        </a>
+    </li>
+    <li>
         <a href="{{ route('users.index')}}">
             <i class="pe-7s-users"></i>
             <p>Gebruikers</p>

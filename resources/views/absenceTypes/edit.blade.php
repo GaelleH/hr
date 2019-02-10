@@ -14,7 +14,7 @@
             <p>Verlofjaren</p>
         </a>
     </li>
-    <li>
+    <li class="active">
         <a href="{{ route('absence-types.index')}}">
             <i class="pe-7s-ticket"></i>
             <p>Afwezigheidstypes</p>
@@ -26,7 +26,7 @@
             <p>Gebruikers</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('user_functions.index')}}">
             <i class="pe-7s-headphones"></i>
             <p>Functies</p>
@@ -43,17 +43,17 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Functie aanpassen</h4>
+                        <h4 class="title">Afwezigheidstype aanpassen</h4>
                     </div>
                     <div class="content">
-                        <form method="POST" action="{{ route('user_functions.update', $function) }}">
+                        <form method="POST" action="{{ route('absence-types.update', $type) }}">
                             {{ csrf_field() }}
                             {{ method_field('PUT')}}
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label>Achternaam</label>
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Achternaam" value="{{ $function->name }}">
+                                        <label>Naam</label>
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Naam" value="{{ $type->name }}">
                                     </div>
                                 </div>
                             </div>

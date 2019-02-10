@@ -14,7 +14,7 @@
             <p>Verlofjaren</p>
         </a>
     </li>
-    <li>
+    <li class="active">
         <a href="{{ route('absence-types.index')}}">
             <i class="pe-7s-ticket"></i>
             <p>Afwezigheidstypes</p>
@@ -26,7 +26,7 @@
             <p>Gebruikers</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('user_functions.index')}}">
             <i class="pe-7s-headphones"></i>
             <p>Functies</p>
@@ -43,10 +43,10 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">Nieuwe functie</h4>
+                            <h4 class="title">Nieuw afwezigheidstype</h4>
                         </div>
                         <div class="content">
-                            <form method="POST" action="{{ route('user_functions.store') }}">
+                            <form method="POST" action="{{ route('absence-types.store') }}">
                                 {{ csrf_field() }}
                                 <div class="row">
                                     <div class="col-md-6">

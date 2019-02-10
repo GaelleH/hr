@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AbsenceYearStoreRequest;
 use App\Http\Requests\AbsenceYearUpdateRequest;
 use App\AbsencesYear;
 use App\User;
@@ -51,7 +52,7 @@ class AbscencesYearController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(AbsenceYearUpdateRequest $request)
+    public function store(AbsenceYearStoreRequest $request)
     {
         $validated = $request->validated();
 
@@ -62,7 +63,7 @@ class AbscencesYearController extends Controller
         $year->extra_leave_hours = $request->input('extra_leave_hours');
         $year->save();
 
-        $user->users()->attach($request->user_id);
+        $year->users()->attach($request->user_id);
 
         return redirect('/absences')->with('succes', 'Een nieuw verlofjaar werd toegevoegd');
     }
@@ -86,12 +87,11 @@ class AbscencesYearController extends Controller
      * @param  \App\AbsencesYear  $absencesYear
      * @return \Illuminate\Http\Response
      */
-    public function edit(AbsencesYear $absencesYear, $id)
+    public function edit($id)
     {
-        $year = AbsencesYear::all();
+        $year = AbsencesYear::with('users')->find($id);
         $users = User::all();
-        dump($year);
-        dump($id);
+
         view()->share('users', $users);
 
         return view('abscences.edit')->with('year', $year);    }
@@ -103,9 +103,22 @@ class AbscencesYearController extends Controller
      * @param  \App\AbsencesYear  $absencesYear
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AbsencesYear $absencesYear)
+    public function update(AbsenceYearUpdateRequest $request, $id)
     {
-        //
+        $validated = $request->validated();
+
+        $year = AbsencesYear::find($id);
+        $year->users()->detach();
+        $year->official_leave_hours = $request->input('official_leave_hours');
+        $year->year = $request->input('year');
+        $year->extra_leave_hours = $request->input('extra_leave_hours');
+        $year->save();
+
+        // $role = Role::with('users')->where('user_id', $id)->get();
+
+        $year->users()->attach($request->user_id);
+
+        return redirect('/absences')->with('succes', 'Het verlofjaar werd aangepast');
     }
 
     /**
@@ -114,8 +127,11 @@ class AbscencesYearController extends Controller
      * @param  \App\AbsencesYear  $absencesYear
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AbsencesYear $absencesYear)
+    public function destroy($id)
     {
-        //
+        $year = AbsencesYear::find($id);
+        $year->delete();
+
+        return redirect('/absences')->with('succes', 'Het verlofjaar werd verwijderd');
     }
 }

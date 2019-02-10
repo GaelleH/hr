@@ -15,6 +15,12 @@
         </a>
     </li>
     <li>
+        <a href="{{ route('absence-types.index')}}">
+            <i class="pe-7s-ticket"></i>
+            <p>Afwezigheidstypes</p>
+        </a>
+    </li>
+    <li>
         <a href="{{ route('users.index')}}">
             <i class="pe-7s-users"></i>
             <p>Gebruikers</p>
@@ -68,8 +74,12 @@
                                             <div class="form-group">
                                                 <label>Gebruiker</label>
                                                 <select class="form-control" name="user_id" id="user_id">
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->name }}</option>
+                                                    @foreach ($users as $key => $user)
+                                                        <option value="{{ $key }}"
+                                                            @if ($key == old('user_id'))
+                                                                selected="selected"
+                                                            @endif
+                                                            >{{ $user->first_name }} {{ $user->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

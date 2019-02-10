@@ -14,7 +14,7 @@
             <p>Verlofjaren</p>
         </a>
     </li>
-    <li>
+    <li class="active">
         <a href="{{ route('absence-types.index')}}">
             <i class="pe-7s-ticket"></i>
             <p>Afwezigheidstypes</p>
@@ -26,7 +26,7 @@
             <p>Gebruikers</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('user_functions.index')}}">
             <i class="pe-7s-headphones"></i>
             <p>Functies</p>
@@ -40,14 +40,32 @@
     <div class="container-fluid">
         <div class="row">
             @include('layouts.messages')
-            <a href="{{ route('user_functions.create')}}" class="btn btn-info btn-fill">Nieuwe functie toevoegen</a>
+            <div class="col-md-6">
+                @role('developer')
+                    <a href="{{ route('absence-types.create')}}" class="btn btn-info btn-fill">Nieuw afwezigheidstype toevoegen</a>
+                @endrole
+            </div>
+            
+            <form action="{{ route('absence-types.index') }}" method="GET">
+                    <div class="form-group">
+                    <div class="col-md-4">
+                        <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
+                    </div>
+                    <div class="col-md-2">
+
+                        <button class="btn btn-default btn-fill" type="submit">Search</button>
+                    </div>
+                    </div>
+                </form>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-plain">
                         <div class="header">
-                            <h4 class="title">Functies</h4>
+                            <h4 class="title">Afwezigheidstypes</h4>
                             <p class="category"></p>
                         </div>
+                        @if(count($types) > 0)
                         <div class="content table-responsive table-full-width">
                             <table class="table table-hover">
                                 <thead>
@@ -55,20 +73,19 @@
                                     <th>Naam</th>
                                 </thead>
                                 <tbody>
-                                @if(count($functions) > 0)
-                                    @foreach($functions as $function)
+                                    @foreach($types as $type)
                                     <tr>
-                                        <td><a href="user_functions/{{$function->id}}">{{ $function->id }}</a></td>
-                                        <td><a href="user_functions/{{$function->id}}">{{ $function->name }}</a></td>
+                                        <td><a href="absence-types/{{$type->id}}">{{ $type->id }}</a></td>
+                                        <td><a href="absence-types/{{$type->id}}">{{ $type->name }}</a></td>
                                     </tr>
                                     @endforeach
-                                    {{ $functions->links() }}
-                                @else
-                                    Geen functies beschikbaar
-                                @endif
+                                    {{ $types->appends(['s' => $s])->links() }}
                                 </tbody>
                             </table>
                         </div> 
+                        @else
+                            Geen afwezigheidstypes beschikbaar
+                        @endif
                     </div>
                 </div>
             </div> 
