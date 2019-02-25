@@ -21,6 +21,7 @@ Route::resources([
     'users' => 'UserController',
     'user_functions' => 'UserFunctionController',
     'absences' => 'AbscencesYearController',
+    'absence' => 'AbsenceController',
     'absence-types' => 'AbsenceTypeController',
 ]);
 

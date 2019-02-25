@@ -74,12 +74,8 @@
                                             <div class="form-group">
                                                 <label>Gebruiker</label>
                                                 <select class="form-control" name="user_id" id="user_id">
-                                                    @foreach ($users as $key => $user)
-                                                        <option value="{{ $key }}"
-                                                            @if ($key == old('user_id'))
-                                                                selected="selected"
-                                                            @endif
-                                                            >{{ $user->first_name }} {{ $user->name }}</option>
+                                                    @foreach ($users as $user)
+                                                        <option value="{{ $user->id }}" @if ($year->user_id == $user->id) selected @endif>{{ $user->first_name }} {{ $user->name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

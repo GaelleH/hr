@@ -8,6 +8,12 @@
             <p>Dashboard</p>
         </a>
     </li>
+    <li class="active">
+        <a href="{{ route('absence.create')}}">
+            <i class="pe-7s-sun"></i>
+            <p>Afwezigheden</p>
+        </a>
+    </li>
     <li>
         <a href="{{ route('absences.index')}}">
             <i class="pe-7s-drawer"></i>

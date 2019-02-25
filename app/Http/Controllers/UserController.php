@@ -98,6 +98,7 @@ class UserController extends Controller
         //     ->where('user_id', $id)
         //     ->first();
         // $test = Role::with('users')->where('user_id', $id)->first();
+        //->join('user_functions','users.user_function_id', '=', 'user_functions.id')
         $user = User::with('roles')->find($id);
 
         return view('users.show')->with('user', $user);
