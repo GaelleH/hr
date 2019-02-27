@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\AbsenceType;
+use App\Absence;
+use App\AbsenceDate;
 use App\User;
 use App\AbsencesYear;
+use App\Http\Requests\StoreAbsenceRequest;
 use Illuminate\Http\Request;
 use DB;
 use Auth;
@@ -19,7 +22,7 @@ class AbsenceController extends Controller
      */
     public function index()
     {
-        //
+        return view('absence.index');
     }
 
     /**
@@ -46,9 +49,31 @@ class AbsenceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreAbsenceRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        //Create setting
+        $absence = new Absence;
+        $absence->absence_type_id = $request->input('absence_type_id');
+        $absence->absences_year_id = $request->input('absences_year_id');
+        $absence->remarks = $request->input('remarks');
+        $absence->user_id = $request->input('user_id');
+        $absence->status = 1;
+        $absence->save();
+
+        $input = Input::all();
+        dump($input);die;
+
+        foreach ($input['rows'] as $row) {
+            $items = new AbsenceDate([
+                'date' => $row['date'],
+                'number_of_hours' => $row['number_of_hours'],
+            ]);
+            $items->save();
+        }
+
+        return redirect('/absence')->with('succes', 'Een nieuw verlofjaar werd toegevoegd');
     }
 
     /**

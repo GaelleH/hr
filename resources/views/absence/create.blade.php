@@ -52,7 +52,7 @@
                             <h4 class="title">Nieuwe afwezigheid</h4>
                         </div>
                         <div class="content">
-                            <form method="POST" action="{{ route('absences.store') }}">
+                            <form method="POST" action="{{ route('absence.store') }}">
                                 {{ csrf_field() }}
                                 <div class="row">
                                     <div class="col-md-6">
@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="form-group">
                                             <label>Verlofjaar</label>
-                                            <select class="form-control" name="absence_year_id" id="absence_year_id">
+                                            <select class="form-control" name="absences_year_id" id="absences_year_id">
                                                     <option value="{{ $years->id }}">{{ $years->year }}</option>
                                             </select>
                                         </div>
@@ -90,21 +90,20 @@
                                     <ul></ul>
                                 </div>
                     
-                    
                                 <div class="alert alert-success print-success-msg" style="display:none">
                                 <ul></ul>
                                 </div>
                     
                     
                                 <div class="table-responsive">  
-                                    <table class="table table-bordered" id="dynamic_field">  
+                                    <table class="table" id="dynamic_field">  
                                         <tr>  
-                                            <td><input type="date" name="date[]" class="form-control date_list" /></td>  
-                                            <td><input type="number" name="number_of_hours[]" placeholder="Aantal uur" class="form-control date_list" /></td>  
-                                            <td><button type="button" name="add" id="add" class="btn btn-success">Add More</button></td>  
+                                            <td><input type="date" name="rows[][date]" class="form-control date_list" /></td>  
+                                            <td><input type="number" name="rows[][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td>  
+                                            <td><button type="button" name="add" id="add" class="btn btn-success"><i class="pe-7s-plus"></i></button></td>  
                                         </tr>  
                                     </table>  
-                                    <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />  
+                                    <button type="submit" class="btn btn-info btn-fill pull-right">Opslaan</button>
                                 </div>
                             
                                 <div class="clearfix"></div>
@@ -126,7 +125,7 @@
     
           $('#add').click(function(){  
                i++;  
-               $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="date" name="date[]" class="form-control date_list" /></td><td><input type="number" name="number_of_hours[]" placeholder="Aantal uur" class="form-control date_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove">X</button></td></tr>');  
+               $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="date" name="rows[' + i +'][date]" class="form-control date_list" /></td><td><input type="number" name="rows[' + i +'][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove"><i class="pe-7s-close-circle"></i></button></td></tr>');  
           });  
     
     
@@ -136,45 +135,45 @@
           });  
     
     
-          $.ajaxSetup({
-              headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-              }
-          });
+        //   $.ajaxSetup({
+        //       headers: {
+        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //       }
+        //   });
     
     
-          $('#submit').click(function(){            
-               $.ajax({  
-                    url:postURL,  
-                    method:"POST",  
-                    data:$('#add_name').serialize(),
-                    type:'json',
-                    success:function(data)  
-                    {
-                        if(data.error){
-                            printErrorMsg(data.error);
-                        }else{
-                            i=1;
-                            $('.dynamic-added').remove();
-                            $('#add_name')[0].reset();
-                            $(".print-success-msg").find("ul").html('');
-                            $(".print-success-msg").css('display','block');
-                            $(".print-error-msg").css('display','none');
-                            $(".print-success-msg").find("ul").append('<li>Record Inserted Successfully.</li>');
-                        }
-                    }  
-               });  
-          });  
+        //   $('#submit').click(function(){            
+        //        $.ajax({  
+        //             url:postURL,  
+        //             method:"POST",  
+        //             data:$('#add_name').serialize(),
+        //             type:'json',
+        //             success:function(data)  
+        //             {
+        //                 if(data.error){
+        //                     printErrorMsg(data.error);
+        //                 }else{
+        //                     i=1;
+        //                     $('.dynamic-added').remove();
+        //                     $('#add_name')[0].reset();
+        //                     $(".print-success-msg").find("ul").html('');
+        //                     $(".print-success-msg").css('display','block');
+        //                     $(".print-error-msg").css('display','none');
+        //                     $(".print-success-msg").find("ul").append('<li>Record Inserted Successfully.</li>');
+        //                 }
+        //             }  
+        //        });  
+        //   });  
     
     
-          function printErrorMsg (msg) {
-             $(".print-error-msg").find("ul").html('');
-             $(".print-error-msg").css('display','block');
-             $(".print-success-msg").css('display','none');
-             $.each( msg, function( key, value ) {
-                $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
-             });
-          }
+        //   function printErrorMsg (msg) {
+        //      $(".print-error-msg").find("ul").html('');
+        //      $(".print-error-msg").css('display','block');
+        //      $(".print-success-msg").css('display','none');
+        //      $.each( msg, function( key, value ) {
+        //         $(".print-error-msg").find("ul").append('<li>'+value+'</li>');
+        //      });
+        //   }
         });  
     </script>
 @endsection

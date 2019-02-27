@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AbsenceYearStoreRequest extends FormRequest
+class StoreAbsenceRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,9 @@ class AbsenceYearStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'official_leave_hours' => 'required|integer',
+            // 'absence_type_id' => 'required|integer',
+            // 'absences_year_id' => 'required|integer',
             'user_id' => 'required|integer',
-            // 'year' => 'required|integer',
         ];
     }
 
@@ -38,9 +38,9 @@ class AbsenceYearStoreRequest extends FormRequest
     public function messages()
     {
         return [
-            // 'official_leave_hours.required' => 'Het aantal officiële verlofuren is verplicht!',
-            'user_id.required' => 'Een gebruiker is verplicht!',
-            // 'year.required' => 'Het verlofjaar is verplicht!',
+            // 'absence_type_id.required' => 'Het afwezigheids is verplicht!',
+            // 'absences_year_id.required' => 'Het verlofjaar is verplicht!',
+            'user_id.required' => 'Kies een medewerker!',
         ];
     }
 }
