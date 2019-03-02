@@ -71,7 +71,7 @@
                                     <div class="form-group">
                                         <label>Gebruiker</label>
                                         @foreach($year->users as $user)
-                                            <div>{{ $user->first_name }} {{$user->name }}</div>
+                                            <div>{{ $user->first_name }} {{$user->last_name }}</div>
                                         @endforeach
                                     </div>
                                 </div>

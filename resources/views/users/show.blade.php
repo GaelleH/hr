@@ -43,7 +43,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="header">
-                            <h4 class="title">{{ $user->first_name}} {{ $user->name }}</h4>
+                            <h4 class="title">{{ $user->first_name}} {{ $user->last_name }}</h4>
                         </div>
                         <div class="content">
                             <div class="row">

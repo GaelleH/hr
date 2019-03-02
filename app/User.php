@@ -12,7 +12,7 @@ class User extends Authenticatable
     use Notifiable, HasPermissionsTrait;
 
     public function scopeSearch($query, $s) {
-        return $query->where('name', 'like', '%' .$s. '%')
+        return $query->where('last_name', 'like', '%' .$s. '%')
         ->orWhere('first_name', 'like', '%' .$s. '%');
     }
 
@@ -22,7 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'first_name', 'last_name', 'email', 'password',
     ];
 
     /**

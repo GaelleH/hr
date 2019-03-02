@@ -9,7 +9,7 @@
         </a>
     </li>
     <li class="active">
-        <a href="{{ route('absence.create')}}">
+        <a href="{{ route('absence.index')}}">
             <i class="pe-7s-sun"></i>
             <p>Afwezigheden</p>
         </a>
@@ -60,7 +60,7 @@
                                             <label>Medewerker</label>
                                             <select class="form-control" name="user_id" id="user_id">
                                                 @foreach ($users as $user)
-                                                    <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->name }}</option>
+                                                    <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->last_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -97,11 +97,13 @@
                     
                                 <div class="table-responsive">  
                                     <table class="table" id="dynamic_field">  
+                                        <?php $count = 0; ?>
                                         <tr>  
-                                            <td><input type="date" name="rows[][date]" class="form-control date_list" /></td>  
-                                            <td><input type="number" name="rows[][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td>  
+                                            <td><input type="date" name="rows[<?= $count ?>][date]" class="form-control date_list" /></td>  
+                                            <td><input type="number" name="rows[<?= $count ?>][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td>  
                                             <td><button type="button" name="add" id="add" class="btn btn-success"><i class="pe-7s-plus"></i></button></td>  
                                         </tr>  
+                                        <?php $count++; ?>
                                     </table>  
                                     <button type="submit" class="btn btn-info btn-fill pull-right">Opslaan</button>
                                 </div>
@@ -120,18 +122,18 @@
     <script type="text/javascript">
         $(document).ready(function(){      
           var postURL = "<?php echo url('addmore'); ?>";
-          var i=1;  
+          var i = <?= $count; ?>;
+          console.log(i);  
     
     
           $('#add').click(function(){  
-               i++;  
-               $('#dynamic_field').append('<tr id="row'+i+'" class="dynamic-added"><td><input type="date" name="rows[' + i +'][date]" class="form-control date_list" /></td><td><input type="number" name="rows[' + i +'][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove"><i class="pe-7s-close-circle"></i></button></td></tr>');  
+               $('#dynamic_field').append('<tr id="row'+ i +'" class="dynamic-added"><td><input type="date" name="rows[' + i +'][date]" class="form-control date_list" /></td><td><input type="number" name="rows[' + i +'][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove"><i class="pe-7s-close-circle"></i></button></td></tr>');  
           });  
     
     
           $(document).on('click', '.btn_remove', function(){  
                var button_id = $(this).attr("id");   
-               $('#row'+button_id+'').remove();  
+               $('#row'+ button_id +'').remove();  
           });  
     
     

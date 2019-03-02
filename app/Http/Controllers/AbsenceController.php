@@ -8,7 +8,8 @@ use App\AbsenceDate;
 use App\User;
 use App\AbsencesYear;
 use App\Http\Requests\StoreAbsenceRequest;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
+use Request;
 use DB;
 use Auth;
 
@@ -20,9 +21,18 @@ class AbsenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view('absence.index');
+    public function index(Request $request)
+    {   
+        $s = Request::input('s');
+        $absences = Absence::leftJoin('users', 'absences.user_id', '=', 'users.id')
+            ->leftJoin('absences_years', 'absences.absences_year_id', '=', 'absences_years.id')
+            ->leftJoin('absence_types', 'absences.absence_type_id', '=', 'absence_types.id')
+            ->select('absences.id', 'users.first_name', 'users.last_name', 'absences_years.year', 'absence_types.name')
+            ->search($s)
+            ->paginate(10);
+        view()->share('s', $s);
+
+        return view('absence.index')->with('absences', $absences);
     }
 
     /**
@@ -62,18 +72,18 @@ class AbsenceController extends Controller
         $absence->status = 1;
         $absence->save();
 
-        $input = Input::all();
-        dump($input);die;
-
-        foreach ($input['rows'] as $row) {
+        $data = Request::all();
+        
+        foreach ($data['rows'] as $row) {
             $items = new AbsenceDate([
+                'absence_id' => $absence->id,
                 'date' => $row['date'],
                 'number_of_hours' => $row['number_of_hours'],
             ]);
             $items->save();
         }
 
-        return redirect('/absence')->with('succes', 'Een nieuw verlofjaar werd toegevoegd');
+        return redirect('/absence')->with('succes', 'Een nieuw aanvraag werd toegevoegd');
     }
 
     /**
@@ -82,9 +92,21 @@ class AbsenceController extends Controller
      * @param  \App\AbsenceType  $absenceType
      * @return \Illuminate\Http\Response
      */
-    public function show(AbsenceType $absenceType)
+    public function show($id)
     {
-        //
+        $absence = Absence::leftJoin('users', 'absences.user_id', '=', 'users.id')
+            ->leftJoin('absences_years', 'absences.absences_year_id', '=', 'absences_years.id')
+            ->leftJoin('absence_types', 'absences.absence_type_id', '=', 'absence_types.id')
+            ->where('absences.id', '=', $id)
+            ->select('absences.id', 'users.first_name', 'users.last_name', 'absences.remarks', 'absences.status', 'absences_years.year', 'absence_types.name')
+            ->first();
+
+        $dates = DB::table('absence_dates')
+            ->where('absence_id', '=', $id)
+            ->get();
+        view()->share('dates', $dates);
+
+        return view('absence.show')->with('absence', $absence);
     }
 
     /**
@@ -93,9 +115,17 @@ class AbsenceController extends Controller
      * @param  \App\AbsenceType  $absenceType
      * @return \Illuminate\Http\Response
      */
-    public function edit(AbsenceType $absenceType)
+    public function edit($id)
     {
-        //
+        $absence = Absence::find($id);
+        $users = User::all();
+        $years = AbsencesYear::with('users')->where('user_id', auth::user()->id)->get();
+        $types = AbsenceType::all();
+        view()->share('users', $users);
+        view()->share('years', $years);
+        view()->share('types', $types);
+
+        return view('absence.edit')->with('absence', $absence);
     }
 
     /**

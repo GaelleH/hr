@@ -8,12 +8,19 @@ use App\AbsenceType;
 
 class Absence extends Model
 {
+    public function scopeSearch($query, $s) {
+        return $query->where('first_name', 'like', '%' .$s. '%')
+        ->orWhere('last_name', 'like', '%' .$s. '%')
+        ->orWhere('year', 'like', '%' .$s. '%')
+        ->orWhere('name', 'like', '%' .$s. '%');
+    }
+
     public function users() {
         return $this->belongsTo(User::class);
     }
 
-    // public function absenceYears() {
-    //     return $this->belongsTo(AbsencesYear::class);
+    // public function absenceDates() {
+    //     return $this->belongsToMany(AbsencesYear::class);
     // }
 
     // public function absenceTypes() {

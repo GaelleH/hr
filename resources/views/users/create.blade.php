@@ -58,7 +58,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Achternaam</label>
-                                            <input type="text" class="form-control" name="name" id="name" placeholder="Achternaam">
+                                            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Achternaam">
                                         </div>
                                     </div>
                                 </div>

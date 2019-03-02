@@ -9,7 +9,7 @@
         </a>
     </li>
     <li class="active">
-        <a href="{{ route('absence.create')}}">
+        <a href="{{ route('absence.index')}}">
             <i class="pe-7s-sun"></i>
             <p>Afwezigheden</p>
         </a>

@@ -79,7 +79,7 @@
                                     @foreach($users as $user)
                                     <tr>
                                         <td><a href="users/{{$user->id}}">{{ $user->id }}</a></td>
-                                        <td><a href="users/{{$user->id}}">{{ $user->first_name }} {{ $user->name }}</a></td>
+                                        <td><a href="users/{{$user->id}}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
                                         <td><a href="users/{{$user->id}}">{{ $user->contract_start_date }}</a></td>
                                         @if(!empty($user->tel))
                                             <td><a href="users/{{$user->id}}">{{ $user->tel }}</a></td>

@@ -74,7 +74,7 @@
                                                 <label>Gebruiker</label>
                                                 <select class="form-control" name="user_id" id="user_id">
                                                     @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->name }}</option>
+                                                        <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->last_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

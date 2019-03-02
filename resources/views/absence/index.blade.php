@@ -9,6 +9,12 @@
         </a>
     </li>
     <li class="active">
+        <a href="{{ route('absence.index')}}">
+            <i class="pe-7s-sun"></i>
+            <p>Afwezigheden</p>
+        </a>
+    </li>
+    <li>
         <a href="{{ route('absences.index')}}">
             <i class="pe-7s-drawer"></i>
             <p>Verlofjaren</p>
@@ -42,11 +48,57 @@
             @include('layouts.messages')
             <div class="col-md-6">
 
-                <a href="{{ route('absence.create')}}" class="btn btn-info btn-fill">Nieuw jaar voor gebruiker toevoegen</a>
+                <a href="{{ route('absence.create')}}" class="btn btn-info btn-fill">Nieuwe aanvraag toevoegen</a>
             </div>
             
-            
+            <form action="{{ route('absence.index') }}" method="GET">
+                <div class="form-group">
+                <div class="col-md-4">
+                    <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
+                </div>
+                <div class="col-md-2">
+
+                    <button class="btn btn-default btn-fill" type="submit">Search</button>
+                </div>
+                </div>
+            </form>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-plain">
+                    <div class="header">
+                        <h4 class="title">Afwezigheden</h4>
+                        <p class="category"></p>
+                    </div>
+                    @if(count($absences) > 0)
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-hover">
+                            <thead>
+                                <th>ID</th>
+                                <th>Verlofjaar</th>
+                                <th>Gebruiker</th>
+                                <th>Afwezigheidstype</th>
+                            </thead>
+                            <tbody>
+                                @foreach($absences as $absence)
+                                <tr>
+                                    <td><a href="absence/{{$absence->id}}">{{ $absence->id }}</a></td>
+                                    <td><a href="absence/{{$absence->id}}">{{ $absence->year }}</a></td>
+                                    <td><a href="absence/{{$absence->id}}">{{ $absence->first_name }} {{ $absence->last_name }}</a></td>
+                                    <td><a href="absence/{{$absence->id}}">{{ $absence->name }}</a></td>
+                                </tr>
+                                @endforeach
+                                {{ $absences->appends(['s' => $s])->links() }}
+                            </tbody>
+                        </table>
+                    </div> 
+                    @else
+                        Geen afwezigheden beschikbaar
+                    @endif
+                </div>
+            </div>
+        </div> 
+            
     </div>
 </div>
 @endsection

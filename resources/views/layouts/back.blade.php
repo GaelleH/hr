@@ -35,7 +35,7 @@
                 <div class="sidebar-wrapper">
                     <div class="logo">
                         <a href="{{ route('dashboard')}}" class="simple-text">
-                            {{Auth::user()->first_name}} {{Auth::user()->name}}
+                            {{Auth::user()->first_name}} {{Auth::user()->last_name}}
                         </a>
                     </div>
 
