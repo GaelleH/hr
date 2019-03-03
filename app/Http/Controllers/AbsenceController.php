@@ -8,6 +8,7 @@ use App\AbsenceDate;
 use App\User;
 use App\AbsencesYear;
 use App\Http\Requests\StoreAbsenceRequest;
+use App\Http\Requests\UpdateAbsenceRequest;
 // use Illuminate\Http\Request;
 use Request;
 use DB;
@@ -121,9 +122,13 @@ class AbsenceController extends Controller
         $users = User::all();
         $years = AbsencesYear::with('users')->where('user_id', auth::user()->id)->get();
         $types = AbsenceType::all();
+        $dates = DB::table('absence_dates')
+            ->where('absence_id', '=', $id)
+            ->get();
         view()->share('users', $users);
         view()->share('years', $years);
         view()->share('types', $types);
+        view()->share('dates', $dates);
 
         return view('absence.edit')->with('absence', $absence);
     }
@@ -135,9 +140,44 @@ class AbsenceController extends Controller
      * @param  \App\AbsenceType  $absenceType
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, AbsenceType $absenceType)
+    public function update(UpdateAbsenceRequest $request, $id)
     {
-        //
+        $absence = Absence::find($id);
+        $absence->absence_type_id = $request->input('absence_type_id');
+        $absence->absences_year_id = $request->input('absences_year_id');
+        $absence->remarks = $request->input('remarks');
+        $absence->user_id = $request->input('user_id');
+        $absence->save();
+
+        $data = Request::all();
+        
+        $dates = DB::table('absence_dates')
+            ->where('absence_id', '=', $id)
+            ->get();
+
+        foreach ($data['rows'] as $row) {
+            foreach ($dates as $date) {
+                if ($absence->id === $date->absence_id && $row['date'] === $date->date) {
+                    $d = DB::table('absence_dates')
+                                ->where('absence_id', '=', $absence->id)
+                                ->where('date', '=', $row['date'])
+                                ->first();
+                    $item = AbsenceDate::find($d->id);
+                    $item->date = $row['date'];
+                    $item->number_of_hours = $row['number_of_hours'];
+                    $item->save();
+                } else {
+                    $items = new AbsenceDate([
+                        'absence_id' => $absence->id,
+                        'date' => $row['date'],
+                        'number_of_hours' => $row['number_of_hours'],
+                        ]);
+                    $items->save();
+                }
+            }
+        }
+
+        return redirect('/absence')->with('succes', 'De afwezigheid werd aangepast');
     }
 
     /**
@@ -146,8 +186,20 @@ class AbsenceController extends Controller
      * @param  \App\AbsenceType  $absenceType
      * @return \Illuminate\Http\Response
      */
-    public function destroy(AbsenceType $absenceType)
+    public function destroy($id)
     {
-        //
+        $dates = DB::table('absence_dates')
+            ->where('absence_id', '=', $id)
+            ->get();
+        
+        foreach ($dates as $date) {
+            $test = AbsenceDate::find($date->id);
+            $test->delete();
+        }
+
+        $absence = Absence::find($id);
+        $absence->delete();
+
+        return redirect('/absence')->with('succes', 'Het afwezigheidstype werd verwijderd');
     }
 }

@@ -43,77 +43,107 @@
 
 @section('content')
 <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                @include('layouts.messages')
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="header">
-                            <h4 class="title">Afwezigheid aanpassen</h4>
-                        </div>
-                        <div class="content">
-                            <form method="POST" action="{{ route('absence.update', $absence) }}">
-                                {{ csrf_field() }}
-                                {{ method_field('PUT')}}
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Medewerker</label>
-                                            <select class="form-control" name="user_id" id="user_id">
-                                                @foreach ($users as $user)
-                                                    <option value="{{ $user->id }}" @if ($absence->user_id == $user->id) selected @endif>{{ $user->first_name }} {{ $user->last_name }}</option>
-                                                @endforeach
-                                            </select>                                        
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Verlofjaar</label>
-                                            <select class="form-control" name="user_id" id="user_id">
-                                                @foreach ($years as $year)
-                                                    <option value="{{ $year->id }}" @if ($absence->absences_year_id == $year->id) selected @endif>{{ $year->year }}</option>
-                                                @endforeach
-                                            </select>                                        
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Afwezigheidstype</label>
-                                            <select class="form-control" name="user_id" id="user_id">
-                                                @foreach ($types as $type)
-                                                    <option value="{{ $type->id }}" @if ($absence->absence_type_id == $type->id) selected @endif>{{ $type->name }}</option>
-                                                @endforeach
-                                            </select>                                        
-                                        </div>
+    <div class="container-fluid">
+        <div class="row">
+            @include('layouts.messages')
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Afwezigheid aanpassen</h4>
+                    </div>
+                    <div class="content">
+                        <form method="POST" action="{{ route('absence.update', $absence) }}">
+                            {{ csrf_field() }}
+                            {{ method_field('PUT')}}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Medewerker</label>
+                                        <select class="form-control" name="user_id" id="user_id">
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}" @if ($absence->user_id == $user->id) selected @endif>{{ $user->first_name }} {{ $user->last_name }}</option>
+                                            @endforeach
+                                        </select>                                        
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label>Opmerkingen</label>
-                                            <textarea rows="9" class="form-control" name="remarks" id="remarks">{{ $absence->remarks }}</textarea>
-                                        </div>
+                                    <div class="form-group">
+                                        <label>Verlofjaar</label>
+                                        <select class="form-control" name="absences_year_id" id="absences_year_id">
+                                            @foreach ($years as $year)
+                                                <option value="{{ $year->id }}" @if ($absence->absences_year_id == $year->id) selected @endif>{{ $year->year }}</option>
+                                            @endforeach
+                                        </select>                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Afwezigheidstype</label>
+                                        <select class="form-control" name="absence_type_id" id="absence_type_id">
+                                            @foreach ($types as $type)
+                                                <option value="{{ $type->id }}" @if ($absence->absence_type_id == $type->id) selected @endif>{{ $type->name }}</option>
+                                            @endforeach
+                                        </select>                                        
                                     </div>
                                 </div>
-                                <div class="row">
-                                        {{-- <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Extra verlofuren</label>
-                                                <input type="number" class="form-control" name="extra_leave_hours" id="extra_leave_hours" value="{{ $year->extra_leave_hours }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Gebruiker</label>
-                                                <select class="form-control" name="user_id" id="user_id">
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}" @if ($year->user_id == $user->id) selected @endif>{{ $user->first_name }} {{ $user->last_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div> --}}
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Opmerkingen</label>
+                                        <textarea rows="9" class="form-control" name="remarks" id="remarks">{{ $absence->remarks }}</textarea>
                                     </div>
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Opslaan</button>
-                                <div class="clearfix"></div>
-                            </form>
-                        </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">  
+                                <table class="table" id="dynamic_field">  
+                                    <?php $count = 0; ?>
+                                    @if (!empty($items))
+                                        @foreach ($dates as $date)
+                                        <tr>  
+                                            <td><input type="date" name="rows[<?= $count ?>][date]" class="form-control date_list" value="{{ $date->date }}" /></td>  
+                                            <td><input type="number" name="rows[<?= $count ?>][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" value="{{ $date->number_of_hours }}" /></td>  
+                                            <td><button type="button" name="remove" id="remove" class="btn btn-danger btn_remove"><i class="pe-7s-close-circle"></i></button></td>
+                                            <td><button type="button" name="add" id="add" class="btn btn-success"><i class="pe-7s-plus"></i></button></td>  
+                                        </tr> 
+                                        @endforeach 
+                                    @else
+                                        <tr>  
+                                            <td><input type="date" name="rows[<?= $count ?>][date]" class="form-control date_list" /></td>  
+                                            <td><input type="number" name="rows[<?= $count ?>][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td>  
+                                            <td><button type="button" name="remove" id="remove" class="btn btn-danger btn_remove"><i class="pe-7s-close-circle"></i></button></td>
+                                            <td><button type="button" name="add" id="add" class="btn btn-success"><i class="pe-7s-plus"></i></button></td>  
+                                        </tr>
+                                    @endif
+                                    <?php $count++; ?>
+                                </table>  
+                            </div>   
+                            <button type="submit" class="btn btn-info btn-fill pull-right">Opslaan</button>
+                            <div class="clearfix"></div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){      
+        var postURL = "<?php echo url('addmore'); ?>";
+        var i = <?= $count; ?>;
+        console.log(i);  
+
+
+        $('#add').click(function(){  
+            $('#dynamic_field').append('<tr id="row'+ i +'" class="dynamic-added"><td><input type="date" name="rows[' + i +'][date]" class="form-control date_list" /></td><td><input type="number" name="rows[' + i +'][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td><td><button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove"><i class="pe-7s-close-circle"></i></button></td></tr>');  
+        });
+
+        $('#remove').click(function(){  
+            $(this).closest("tr").remove();  
+        });  
+
+
+        $(document).on('click', '.btn_remove', function(){  
+            var button_id = $(this).attr("id");   
+            $('#row'+ button_id +'').remove();  
+        });  
+    });  
+</script>
 @endsection
