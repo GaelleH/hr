@@ -26,4 +26,6 @@ Route::resources([
 ]);
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('/my-absence', 'AbsenceController@myAbsence')->name('myAbsence');
+Route::get('/unapproved-absence', 'AbsenceController@unapprovedAbsences')->name('unapprovedAbsences');
 Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changePassword');

@@ -15,6 +15,12 @@
         </a>
     </li>
     <li>
+        <a href="{{ route('myAbsence')}}">
+            <i class="pe-7s-date"></i>
+            <p>Mijn afwezigheden</p>
+        </a>
+    </li>
+    <li>
         <a href="{{ route('absences.index')}}">
             <i class="pe-7s-drawer"></i>
             <p>Verlofjaren</p>
@@ -105,12 +111,16 @@
                                 <button class="btn btn-default btn-fill pull-right">Verwijderen</button>
                             </form>
                         @endrole
-                        @role('developer')
+                        @if($absence->user_id = Auth::user()->id && $absence->status == '1')
                             <a href="{{$absence->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
-                        @endrole
-                        @role('management')
-                            <a href="{{$absence->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
-                        @endrole
+                        @else
+                            @role('developer')
+                                <a href="{{$absence->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
+                            @endrole
+                            @role('management')
+                                <a href="{{$absence->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
+                            @endrole
+                        @endif
                         <div class="clearfix"></div>
                     </div>
                 </div>

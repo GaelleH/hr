@@ -8,19 +8,13 @@
             <p>Dashboard</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('absence.index')}}">
             <i class="pe-7s-sun"></i>
             <p>Afwezigheden</p>
         </a>
     </li>
-    <li>
-        <a href="{{ route('myAbsence')}}">
-            <i class="pe-7s-date"></i>
-            <p>Mijn afwezigheden</p>
-        </a>
-    </li>
-    <li>
+    <li class="active">
         <a href="{{ route('myAbsence')}}">
             <i class="pe-7s-date"></i>
             <p>Mijn afwezigheden</p>
@@ -58,12 +52,7 @@
     <div class="container-fluid">
         <div class="row">
             @include('layouts.messages')
-            <div class="col-md-6">
-
-                <a href="{{ route('absence.create')}}" class="btn btn-info btn-fill">Nieuwe aanvraag toevoegen</a>
-            </div>
-            
-            <form action="{{ route('absence.index') }}" method="GET">
+            <form action="{{ route('myAbsence') }}" method="GET">
                 <div class="form-group">
                 <div class="col-md-4">
                     <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
@@ -79,7 +68,7 @@
             <div class="col-md-12">
                 <div class="card card-plain">
                     <div class="header">
-                        <h4 class="title">Afwezigheden</h4>
+                        <h4 class="title">Nog goed te keuren afwezigheidsaanvragen</h4>
                         <p class="category"></p>
                     </div>
                     @if(count($absences) > 0)
@@ -89,7 +78,6 @@
                                 <th>ID</th>
                                 <th>Datum</th>
                                 <th>Verlofjaar</th>
-                                <th>Gebruiker</th>
                                 <th>Afwezigheidstype</th>
                                 <th>Status</th>
                             </thead>
@@ -99,7 +87,6 @@
                                     <td><a href="absence/{{$absence->id}}">{{ $absence->id }}</a></td>
                                     <td><a href="absence/{{$absence->id}}">{{ $test[$absence->id] }}</a></td>
                                     <td><a href="absence/{{$absence->id}}">{{ $absence->year }}</a></td>
-                                    <td><a href="absence/{{$absence->id}}">{{ $absence->first_name }} {{ $absence->last_name }}</a></td>
                                     <td><a href="absence/{{$absence->id}}">{{ $absence->name }}</a></td>
                                     @if ($absence->status == '1')
                                         <td><a href="absence/{{$absence->id}}">Nieuw</a></td>
@@ -115,12 +102,11 @@
                         </table>
                     </div> 
                     @else
-                        Geen afwezigheden beschikbaar
+                        Geen goed te keuren afwezigheidsaanvragen beschikbaar
                     @endif
                 </div>
             </div>
-        </div> 
-            
+        </div>    
     </div>
 </div>
 @endsection

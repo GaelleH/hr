@@ -28,10 +28,21 @@ class AbsenceController extends Controller
         $absences = Absence::leftJoin('users', 'absences.user_id', '=', 'users.id')
             ->leftJoin('absences_years', 'absences.absences_year_id', '=', 'absences_years.id')
             ->leftJoin('absence_types', 'absences.absence_type_id', '=', 'absence_types.id')
-            ->select('absences.id', 'users.first_name', 'users.last_name', 'absences_years.year', 'absence_types.name')
+            ->select('absences.id', 'absences.status', 'users.first_name', 'users.last_name', 'absences_years.year', 'absence_types.name')
             ->search($s)
+            ->orderBy('absences.status', 'DESC')
             ->paginate(10);
         view()->share('s', $s);
+
+        foreach ($absences as $absence){
+            $dates = AbsenceDate::where('absence_id', '=', $absence->id)
+                ->pluck('date')
+                // ->get()
+                ->toArray();
+            $test[$absence->id] = implode(" - ", $dates);
+            view()->share('test', $test);
+        }
+        
 
         return view('absence.index')->with('absences', $absences);
     }
@@ -201,5 +212,65 @@ class AbsenceController extends Controller
         $absence->delete();
 
         return redirect('/absence')->with('succes', 'Het afwezigheidstype werd verwijderd');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function myAbsence()
+    {
+        $s = Request::input('s');
+        $absences = Absence::leftJoin('users', 'absences.user_id', '=', 'users.id')
+            ->leftJoin('absences_years', 'absences.absences_year_id', '=', 'absences_years.id')
+            ->leftJoin('absence_types', 'absences.absence_type_id', '=', 'absence_types.id')
+            ->where('absences.user_id', '=', Auth::user()->id)
+            ->select('absences.id', 'absences.status', 'users.first_name', 'users.last_name', 'absences_years.year', 'absence_types.name')
+            ->search($s)
+            ->orderBy('absences.status', 'DESC')
+            ->paginate(10);
+        view()->share('s', $s);
+
+        foreach ($absences as $absence){
+            $dates = AbsenceDate::where('absence_id', '=', $absence->id)
+                ->pluck('date')
+                // ->get()
+                ->toArray();
+            $test[$absence->id] = implode(" - ", $dates);
+            view()->share('test', $test);
+        }
+
+        return view('absence.my_absence')->with('absences', $absences);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function unapprovedAbsences()
+    {
+        $s = Request::input('s');
+        $absences = Absence::leftJoin('users', 'absences.user_id', '=', 'users.id')
+            ->leftJoin('absences_years', 'absences.absences_year_id', '=', 'absences_years.id')
+            ->leftJoin('absence_types', 'absences.absence_type_id', '=', 'absence_types.id')
+            ->where('absences.status', '=', '1')
+            ->select('absences.id', 'absences.status', 'absences.created_at', 'users.first_name', 'users.last_name', 'absences_years.year', 'absence_types.name')
+            ->search($s)
+            ->orderBy('absences.created_at', 'ASC')
+            ->paginate(10);
+        view()->share('s', $s);
+
+        foreach ($absences as $absence){
+            $dates = AbsenceDate::where('absence_id', '=', $absence->id)
+                ->pluck('date')
+                // ->get()
+                ->toArray();
+            $test[$absence->id] = implode(" - ", $dates);
+            view()->share('test', $test);
+        }
+
+        return view('absence.unapproved')->with('absences', $absences);
     }
 }

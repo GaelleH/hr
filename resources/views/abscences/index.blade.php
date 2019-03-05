@@ -8,6 +8,18 @@
             <p>Dashboard</p>
         </a>
     </li>
+    <li>
+        <a href="{{ route('absence.index')}}">
+            <i class="pe-7s-sun"></i>
+            <p>Afwezigheden</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('myAbsence')}}">
+            <i class="pe-7s-date"></i>
+            <p>Mijn afwezigheden</p>
+        </a>
+    </li>
     <li class="active">
         <a href="{{ route('absences.index')}}">
             <i class="pe-7s-drawer"></i>

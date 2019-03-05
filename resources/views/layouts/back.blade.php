@@ -59,8 +59,11 @@
                         <div class="collapse navbar-collapse">
                             <ul class="nav navbar-nav navbar-left">
                                 <li>
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    <a href="{{ route('unapprovedAbsences') }}">
                                         <i class="fa fa-dashboard"></i>
+                                        <span class="badge" style="background:#1DC7EA;position:relative;top:-15px;left:-10px">
+                                            @include('layouts.unapproved')
+                                        </span>
                                     </a>
                                 </li>
                             </ul>
