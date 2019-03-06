@@ -97,14 +97,20 @@
                                 </tbody>
                             </table>  
                         </div>
-                        @if(Auth::user()->id == $absence->user_id)
-                            <form method="POST" action="{{ route('absence.destroy', $absence->id) }}">
+                        @role('developer')
+                            <form method="POST" action="{{ route('notApproved', $absence->id) }}">
                                 {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                                <button class="btn btn-default btn-fill pull-right">Verwijderen</button>
+                                {{ method_field('POST') }}
+                                <button class="btn btn-danger btn-fill pull-right">Afkeuren</button>
                             </form>
-                            <a href="{{$absence->id}}/edit" class="btn btn-info btn-fill pull-right">Aanpassen</a>
-                        @endif
+                        @endrole
+                        @role('developer')
+                            <form method="POST" action="{{ route('approve', $absence->id) }}">
+                                {{ csrf_field() }}
+                                {{ method_field('PUT') }}
+                                <button class="btn btn-success btn-fill pull-right">Goedkeuren</button>
+                            </form>       
+                        @endrole
                         <div class="clearfix"></div>
                     </div>
                 </div>

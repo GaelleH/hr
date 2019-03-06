@@ -78,22 +78,24 @@
                                 <th>ID</th>
                                 <th>Datum</th>
                                 <th>Verlofjaar</th>
+                                <th>Gebruiker</th>
                                 <th>Afwezigheidstype</th>
                                 <th>Status</th>
                             </thead>
                             <tbody>
                                 @foreach($absences as $absence)
                                 <tr>
-                                    <td><a href="absence/{{$absence->id}}">{{ $absence->id }}</a></td>
-                                    <td><a href="absence/{{$absence->id}}">{{ $test[$absence->id] }}</a></td>
-                                    <td><a href="absence/{{$absence->id}}">{{ $absence->year }}</a></td>
-                                    <td><a href="absence/{{$absence->id}}">{{ $absence->name }}</a></td>
+                                    <td><a href="unapproved-absence/{{$absence->id}}">{{ $absence->id }}</a></td>
+                                    <td><a href="unapproved-absence/{{$absence->id}}">{{ $test[$absence->id] }}</a></td>
+                                    <td><a href="unapproved-absence/{{$absence->id}}">{{ $absence->year }}</a></td>
+                                    <td><a href="unapproved-absence/{{$absence->id}}">{{ $absence->first_name }} {{ $absence->last_name }}</a></td>
+                                    <td><a href="unapproved-absence/{{$absence->id}}">{{ $absence->name }}</a></td>
                                     @if ($absence->status == '1')
-                                        <td><a href="absence/{{$absence->id}}">Nieuw</a></td>
+                                        <td><a href="unapproved-absence/{{$absence->id}}">Nieuw</a></td>
                                     @elseif ($absence->status == '2')
-                                        <td><a href="absence/{{$absence->id}}">Goedgekeurd</a></td>
+                                        <td><a href="unapproved-absence/{{$absence->id}}">Goedgekeurd</a></td>
                                     @else
-                                        <td><a href="absence/{{$absence->id}}">Afgekeurd</a></td>
+                                        <td><a href="unapproved-absence/{{$absence->id}}">Afgekeurd</a></td>
                                     @endif
                                 </tr>
                                 @endforeach

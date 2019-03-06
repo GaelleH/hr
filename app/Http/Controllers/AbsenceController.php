@@ -13,6 +13,7 @@ use App\Http\Requests\UpdateAbsenceRequest;
 use Request;
 use DB;
 use Auth;
+use Mail;
 
 
 class AbsenceController extends Controller
@@ -110,7 +111,7 @@ class AbsenceController extends Controller
             ->leftJoin('absences_years', 'absences.absences_year_id', '=', 'absences_years.id')
             ->leftJoin('absence_types', 'absences.absence_type_id', '=', 'absence_types.id')
             ->where('absences.id', '=', $id)
-            ->select('absences.id', 'users.first_name', 'users.last_name', 'absences.remarks', 'absences.status', 'absences_years.year', 'absence_types.name')
+            ->select('absences.id', 'users.first_name', 'users.last_name', 'absences.remarks', 'absences.status', 'absences_years.year', 'absence_types.name', 'absences.user_id')
             ->first();
 
         $dates = DB::table('absence_dates')
@@ -272,5 +273,86 @@ class AbsenceController extends Controller
         }
 
         return view('absence.unapproved')->with('absences', $absences);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function absence($id)
+    {
+        $absence = Absence::leftJoin('users', 'absences.user_id', '=', 'users.id')
+            ->leftJoin('absences_years', 'absences.absences_year_id', '=', 'absences_years.id')
+            ->leftJoin('absence_types', 'absences.absence_type_id', '=', 'absence_types.id')
+            ->where('absences.id', '=', $id)
+            ->select('absences.id', 'users.first_name', 'users.last_name', 'absences.remarks', 'absences.status', 'absences_years.year', 'absence_types.name', 'absences.user_id')
+            ->first();
+
+        $dates = DB::table('absence_dates')
+            ->where('absence_id', '=', $id)
+            ->get();
+        view()->share('dates', $dates);
+
+        return view('absence.absence')->with('absence', $absence);
+    }
+
+    /**
+     * change status to approved the specified resource from storage.
+     *
+     * @param  \App\AbsenceType  $absenceType
+     * @return \Illuminate\Http\Response
+     */
+    public function approved($id)
+    {
+        $absence = Absence::find($id);
+        // $absence->status = 2;
+        // $absence->save();
+
+        //todo reduce dates
+
+        $dates = AbsenceDate::where('absence_id', '=', $id)->get();
+
+        $year = AbsencesYear::where('user_id', '=', $absence->user_id)->first();
+        foreach ($dates as $date) {
+            $test = $year->official_leave_hours_remaining - $date->number_of_hours;
+            dump($test);die;
+        }
+        
+        $user = User::where('id', '=', $absence->user_id)->first();
+    
+        $mail = $user->email;
+        $name = $user->first_name;
+        
+        $data = array(
+            'email' => $mail,
+            'name' => $name
+        );
+        // Path or name to the blade template to be rendered
+        $template_path = 'request_approved';
+        
+        Mail::send($template_path, $data, function($message) use ($mail, $name) {
+            // Set the receiver and subject of the mail.
+            $message->to($mail, $name)->subject('Uw verlofaanvraag werd goedgekeurd');
+            // Set the sender
+            $message->from('gaelle_hardy1@hotmail.com','HR');
+        });
+
+        return redirect('/unapproved-absence')->with('succes', 'De aanvraag werd goedgekeurd');
+    }
+
+    /**
+     * change status to not approved the specified resource from storage.
+     *
+     * @param  \App\AbsenceType  $absenceType
+     * @return \Illuminate\Http\Response
+     */
+    public function notApproved($id)
+    {
+        $absence = Absence::find($id);
+        $absence->status = 3;
+        $absence->save();
+
+        return redirect('/unapproved-absence')->with('succes', 'De aanvraag werd afgekeurd');
     }
 }
