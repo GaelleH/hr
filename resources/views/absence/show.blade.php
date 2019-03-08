@@ -97,7 +97,7 @@
                                 </tbody>
                             </table>  
                         </div>
-                        @if(Auth::user()->id == $absence->user_id)
+                        @if(Auth::user()->id == $absence->user_id && $absence->status < 2)
                             <form method="POST" action="{{ route('absence.destroy', $absence->id) }}">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}

@@ -75,30 +75,24 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Extra verlofuren</label>
-                                                <input type="number" class="form-control" name="extra_leave_hours" id="extra_leave_hours">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label>Gebruiker</label>
-                                                <select class="form-control" name="user_id" id="user_id">
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->last_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Gebruiker</label>
+                                            <select class="form-control" name="user_id" id="user_id">
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}">{{ $user->first_name }} {{ $user->last_name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
-                                <button type="submit" class="btn btn-info btn-fill pull-right">Opslaan</button>
-                                <div class="clearfix"></div>
-                            </form>
-                        </div>
+                                </div>
+                            <button type="submit" class="btn btn-info btn-fill pull-right">Opslaan</button>
+                            <div class="clearfix"></div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection

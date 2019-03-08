@@ -306,17 +306,29 @@ class AbsenceController extends Controller
     public function approved($id)
     {
         $absence = Absence::find($id);
-        // $absence->status = 2;
-        // $absence->save();
+        $absence->status = 2;
+        $absence->save();
 
-        //todo reduce dates
+        $yearId = $absence->absences_year_id;
+        $year = AbsencesYear::where('id', '=', $yearId)
+            ->first();
+        $numberOfHoursScheduled = 0;
 
-        $dates = AbsenceDate::where('absence_id', '=', $id)->get();
+        $absencesQuery = Absence::join('absence_dates', 'absences.id', '=', 'absence_dates.absence_id')
+            ->where('absences.user_id', '=', $absence->user_id)
+            ->where('absences.absences_year_id', '=', $yearId)
+            ->where('absences.status', '=', 2)
+            ->select('absences.id', 'absence_dates.number_of_hours')
+            ->get();
+        
+        foreach ($absencesQuery as $a) {
+            $numberOfHoursScheduled += $a->number_of_hours;
+        }
 
-        $year = AbsencesYear::where('user_id', '=', $absence->user_id)->first();
-        foreach ($dates as $date) {
-            $test = $year->official_leave_hours_remaining - $date->number_of_hours;
-            dump($test);die;
+        if ($numberOfHoursScheduled > 0) {
+            $year->official_leave_hours_scheduled = $numberOfHoursScheduled;
+            $year->official_leave_hours_remaining = $year->official_leave_hours - $numberOfHoursScheduled;
+            $year->save();
         }
         
         $user = User::where('id', '=', $absence->user_id)->first();
@@ -352,6 +364,25 @@ class AbsenceController extends Controller
         $absence = Absence::find($id);
         $absence->status = 3;
         $absence->save();
+
+        $user = User::where('id', '=', $absence->user_id)->first();
+    
+        $mail = $user->email;
+        $name = $user->first_name;
+        
+        $data = array(
+            'email' => $mail,
+            'name' => $name
+        );
+        // Path or name to the blade template to be rendered
+        $template_path = 'request_disapproved';
+        
+        Mail::send($template_path, $data, function($message) use ($mail, $name) {
+            // Set the receiver and subject of the mail.
+            $message->to($mail, $name)->subject('Uw verlofaanvraag werd afgekeurd');
+            // Set the sender
+            $message->from('gaelle_hardy1@hotmail.com','HR');
+        });
 
         return redirect('/unapproved-absence')->with('succes', 'De aanvraag werd afgekeurd');
     }

@@ -70,7 +70,7 @@
         
                             <ul class="nav navbar-nav navbar-right">
                                 <li>
-                                    <a href="">
+                                    <a href="users/{{Auth::user()->id}}">
                                         Account
                                     </a>
                                 </li>

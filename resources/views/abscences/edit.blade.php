@@ -78,12 +78,6 @@
                                 <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Extra verlofuren</label>
-                                                <input type="number" class="form-control" name="extra_leave_hours" id="extra_leave_hours" value="{{ $year->extra_leave_hours }}">
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
                                                 <label>Gebruiker</label>
                                                 <select class="form-control" name="user_id" id="user_id">
                                                     @foreach ($users as $user)

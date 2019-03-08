@@ -73,12 +73,6 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label>Extra verlofuren</label>
-                                        <div>{{ $year->extra_leave_hours }}</div>
-                                    </div>
-                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Gebruiker</label>
