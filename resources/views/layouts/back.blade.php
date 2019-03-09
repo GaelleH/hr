@@ -60,7 +60,7 @@
                             <ul class="nav navbar-nav navbar-left">
                                 <li>
                                     <a href="{{ route('unapprovedAbsences') }}">
-                                        <i class="fa fa-dashboard"></i>
+                                        <i class="fa fa-folder"></i>
                                         <span class="badge" style="background:#1DC7EA;position:relative;top:-15px;left:-10px">
                                             @include('layouts.unapproved')
                                         </span>
