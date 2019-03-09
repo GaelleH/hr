@@ -21,12 +21,6 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('myAbsence')}}">
-            <i class="pe-7s-date"></i>
-            <p>Mijn afwezigheden</p>
-        </a>
-    </li>
-    <li>
         <a href="{{ route('absences.index')}}">
             <i class="pe-7s-drawer"></i>
             <p>Verlofjaren</p>

@@ -59,6 +59,10 @@ class AbsenceController extends Controller
         view()->share('users', $users);
         $years = AbsencesYear::with('users')->where('user_id', auth::user()->id)->first();
         view()->share('years', $years);
+        $allYears = AbsencesYear::leftJoin('users', 'absences_years.user_id', '=', 'users.id')
+            ->select('absences_years.id', 'absences_years.year', 'users.first_name', 'users.last_name')
+            ->get();
+        view()->share('allYears', $allYears);
         $types = AbsenceType::all();
         view()->share('types', $types);
 
@@ -94,6 +98,33 @@ class AbsenceController extends Controller
                 'number_of_hours' => $row['number_of_hours'],
             ]);
             $items->save();
+        }
+
+        $users = DB::table('role_user')
+            ->leftJoin('users', 'role_user.user_id', '=', 'users.id')
+            ->where('role_user.role_id', '=', 2)
+            ->select('role_user.role_id', 'users.first_name', 'users.last_name', 'users.email')
+            ->get();
+
+        foreach ($users as $user) {
+
+            $mail = $user->email;
+            $name = $user->first_name;
+            
+            $data = array(
+                'email' => $mail,
+                'name' => $name,
+                'remark' => $absence->extra_remarks,
+            );
+            // Path or name to the blade template to be rendered
+            $template_path = 'request_new';
+            
+            Mail::send($template_path, $data, function($message) use ($mail, $name) {
+                // Set the receiver and subject of the mail.
+                $message->to($mail, $name)->subject('Nieuwe verlofaanvraag');
+                // Set the sender
+                $message->from('gaelle_hardy1@hotmail.com','HR');
+            });
         }
 
         return redirect('/absence')->with('succes', 'Een nieuw aanvraag werd toegevoegd');
@@ -133,12 +164,16 @@ class AbsenceController extends Controller
         $absence = Absence::find($id);
         $users = User::all();
         $years = AbsencesYear::with('users')->where('user_id', auth::user()->id)->get();
+        $allYears = AbsencesYear::leftJoin('users', 'absences_years.user_id', '=', 'users.id')
+            ->select('absences_years.id', 'absences_years.year', 'users.first_name', 'users.last_name')
+            ->get();
         $types = AbsenceType::all();
         $dates = DB::table('absence_dates')
             ->where('absence_id', '=', $id)
             ->get();
         view()->share('users', $users);
         view()->share('years', $years);
+        view()->share('allYears', $allYears);
         view()->share('types', $types);
         view()->share('dates', $dates);
 

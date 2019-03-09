@@ -132,6 +132,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @role('management')
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
@@ -146,46 +147,75 @@
                                     </div>
                                 </div>
                             </div>
+                            @endrole
+                            @role('developer')
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Contractdatum</label>
+                                        <input type="date" class="form-control" name="contract_start_date" id="contract_start_date" value="{{ $user->contract_start_date }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Kleur</label>
+                                        <input type="text" class="form-control" name="color" id="color" placeholder="Kleur" value="{{ $user->color }}">
+                                    </div>
+                                </div>
+                            </div>
+                            @endrole
+                            @role('management')
                             <div class="row">
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Rol</label>
-                                        @role('management')
                                         <select class="form-control" name="role_id" id="role_id">
                                             @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                @foreach ($user->roles as $r)
+                                                    <option value="{{ $role->id }}" @if ($r->id == $role->id) selected @endif>{{ $role->name }}</option>
+                                                @endforeach
                                             @endforeach
                                         </select>
-                                        @endrole
-                                        @role('developer')
-                                        <select class="form-control" name="role_id" id="role_id">
-                                            @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @endrole
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>Functie</label>
-                                        @role('management')
                                         <select class="form-control" name="user_function_id" id="user_function_id">
                                             @foreach ($functions as $function)
-                                            <option value="{{ $function->id }}">{{ $function->name }}</option>
+                                            <option value="{{ $function->id }}" @if ($user->user_function_id == $function->id) selected @endif>{{ $function->name }}</option>
                                             @endforeach
                                         </select>
-                                        @endrole
-                                        @role('developer')
-                                        <select class="form-control" name="user_function_id" id="user_function_id">
-                                            @foreach ($functions as $function)
-                                                <option value="{{ $function->id }}">{{ $function->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @endrole
                                     </div>
                                 </div>
                             </div>
+                            @endrole
+                            @role('developer')
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Rol</label>
+                                        <select class="form-control" name="role_id" id="role_id">
+                                            @foreach ($roles as $role)
+                                                @foreach ($user->roles as $r)
+                                                    <option value="{{ $role->id }}" @if ($r->id == $role->id) selected @endif>{{ $role->name }}</option>
+                                                @endforeach
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Functie</label>
+                                        <select class="form-control" name="user_function_id" id="user_function_id">
+                                            @foreach ($functions as $function)
+                                            <option value="{{ $function->id }}" @if ($user->user_function_id == $function->id) selected @endif>{{ $function->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            @endrole
         
                             <button type="submit" class="btn btn-info btn-fill pull-right">Opslaan</button>
                             <div class="clearfix"></div>

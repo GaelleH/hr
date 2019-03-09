@@ -56,19 +56,12 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
-        // $this->validate($request, [
-        //     'first_name' => 'required',
-        //     'name' => 'required',
-        //     'national_register' => 'required',
-        //     'contract_start_date' => 'required',
-        //     'role_id' => 'required',
-        // ]);
         $validated = $request->validated();
 
         //Create setting
         $user = new User;
         $user->first_name = $request->input('first_name');
-        $user->name = $request->input('name');
+        $user->last_name = $request->input('last_name');
         $user->tel = $request->input('tel');
         $user->gsm = $request->input('gsm');
         $user->email = $request->input('email');
@@ -112,7 +105,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = User::with('roles')->find($id);
         $roles = Role::all();
         $functions = UserFunction::all();
         view()->share('functions', $functions);
@@ -132,7 +125,7 @@ class UserController extends Controller
     {
         $this->validate($request, [
             'first_name' => 'required',
-            'name' => 'required',
+            'last_name' => 'required',
             'national_register' => 'required',
             'contract_start_date' => 'required',
             'role_id' => 'required',
@@ -141,7 +134,7 @@ class UserController extends Controller
         $user = User::find($id);
         $user->roles()->detach();
         $user->first_name = $request->input('first_name');
-        $user->name = $request->input('name');
+        $user->last_name = $request->input('last_name');
         $user->tel = $request->input('tel');
         $user->gsm = $request->input('gsm');
         $user->email = $request->input('email');

@@ -27,7 +27,7 @@ class UserStoreRequest extends FormRequest
             'contract_start_date' => 'required|date',
             'email' => 'required|email|unique:users',
             'first_name' => 'required|string|max:50',
-            'name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
             'role_id' => 'required|integer',
         ];
     }
@@ -43,7 +43,7 @@ class UserStoreRequest extends FormRequest
             'contract_start_date.required' => 'De contract startdatum is verplicht!',
             'email.required' => 'Email is verplicht!',
             'first_name.required' => 'De voornaam is verplicht!',
-            'name.required' => 'De achternaam is verplicht!',
+            'last_name.required' => 'De achternaam is verplicht!',
             'role_id.required' => 'De gebruikersrol is verplicht!',
         ];
     }

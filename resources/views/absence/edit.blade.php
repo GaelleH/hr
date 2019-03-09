@@ -71,14 +71,36 @@
                                             @endforeach
                                         </select>                                        
                                     </div>
+                                    @role('employee')
+                                    <div class="form-group">
+                                        <label>Verlofjaar</label>
+                                        @foreach($years->users as $u)
+                                            <select class="form-control" name="absences_year_id" id="absences_year_id">
+                                                <option value="{{ $years->id }}" @if ($absence->absences_year_id == $years->id) selected @endif>{{ $years->year }} - {{ $u->first_name}} {{ $u->last_name }}</option>
+                                            </select>
+                                        @endforeach
+                                    </div>
+                                    @endrole
+                                    @role('management')
                                     <div class="form-group">
                                         <label>Verlofjaar</label>
                                         <select class="form-control" name="absences_year_id" id="absences_year_id">
-                                            @foreach ($years as $year)
-                                                <option value="{{ $year->id }}" @if ($absence->absences_year_id == $year->id) selected @endif>{{ $year->year }}</option>
+                                            @foreach($allYears as $allYear)
+                                                <option value="{{ $allYear->id }}" @if ($absence->absences_year_id == $allYear->id) selected @endif>{{ $allYear->year }} - {{ $allYear->first_name}} {{ $allYear->last_name }}</option>
                                             @endforeach
-                                        </select>                                        
+                                        </select>
                                     </div>
+                                    @endrole
+                                    @role('developer')
+                                    <div class="form-group">
+                                        <label>Verlofjaar</label>
+                                        <select class="form-control" name="absences_year_id" id="absences_year_id">
+                                            @foreach($allYears as $allYear)
+                                                <option value="{{ $allYear->id }}" @if ($absence->absences_year_id == $allYear->id) selected @endif>{{ $allYear->year }} - {{ $allYear->first_name}} {{ $allYear->last_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @endrole
                                     <div class="form-group">
                                         <label>Afwezigheidstype</label>
                                         <select class="form-control" name="absence_type_id" id="absence_type_id">
