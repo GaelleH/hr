@@ -48,6 +48,10 @@
 @endsection
 
 @section('content')
+<?php
+use Carbon\Carbon;
+?>
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -81,6 +85,28 @@
                                     <a href="{{ route('unapprovedAbsences') }}"><i class="fa fa-angle-right"></i> Alle open aanvragen bekijken</a>
                                 @endif
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card ">
+                    <div class="header">
+                        <h4 class="title">Verlof</h4>
+                        <p class="category">Afwezigen deze week</p>
+                    </div>
+                    <div class="content">
+                        <div class="table-full-width">
+                            <table class="table">
+                                <tbody>
+                                    @foreach ($dates as $d)
+                                    <tr>
+                                        <td>{{ date('d-m', strtotime($d->date)) }}</td> 
+                                        <td>{{ $d->first_name}} {{$d->last_name}}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
