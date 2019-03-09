@@ -98,18 +98,26 @@
                             </table>  
                         </div>
                         @role('developer')
-                            <form method="POST" action="{{ route('notApproved', $absence->id) }}">
-                                {{ csrf_field() }}
-                                {{ method_field('POST') }}
-                                <button class="btn btn-danger btn-fill pull-right">Afkeuren</button>
-                            </form>
-                        @endrole
-                        @role('developer')
                             <form method="POST" action="{{ route('approve', $absence->id) }}">
                                 {{ csrf_field() }}
                                 {{ method_field('PUT') }}
                                 <button class="btn btn-success btn-fill pull-right">Goedkeuren</button>
                             </form>       
+                        @endrole
+                        @role('developer')
+                        <form method="POST" action="{{ route('notApproved', $absence->id) }}">
+                                {{ csrf_field() }}
+                                {{ method_field('POST') }}
+                                <button class="btn btn-danger btn-fill pull-right">Afkeuren</button>
+                                <div class="checkbox">
+                                    <input id="checkbox1" name="checkbox1" type="checkbox">
+                                    <label for="checkbox1">Opmerking voor afkeuren meegeven?</label>
+                                </div>
+                                <div class="form-group test" style="display:none">
+                                    <label>Extra opmerking</label>
+                                    <textarea rows="5" class="form-control" name="extra_remarks" id="extra_remarks"></textarea>
+                                </div>
+                            </form>
                         @endrole
                         <div class="clearfix"></div>
                     </div>
@@ -118,4 +126,15 @@
         </div>
     </div>
 </div>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>  
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){  
+
+        $('input[name="checkbox1"]').click(function() {
+            $('.test').toggle(this.checked);
+        })
+    });  
+</script>
 @endsection

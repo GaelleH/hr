@@ -303,7 +303,7 @@ class AbsenceController extends Controller
      * @param  \App\AbsenceType  $absenceType
      * @return \Illuminate\Http\Response
      */
-    public function approved($id)
+    public function approved(Request $request, $id)
     {
         $absence = Absence::find($id);
         $absence->status = 2;
@@ -363,6 +363,7 @@ class AbsenceController extends Controller
     {
         $absence = Absence::find($id);
         $absence->status = 3;
+        $absence->extra_remarks = Request::input('extra_remarks');
         $absence->save();
 
         $user = User::where('id', '=', $absence->user_id)->first();
@@ -372,7 +373,8 @@ class AbsenceController extends Controller
         
         $data = array(
             'email' => $mail,
-            'name' => $name
+            'name' => $name,
+            'remark' => $absence->extra_remarks,
         );
         // Path or name to the blade template to be rendered
         $template_path = 'request_disapproved';
