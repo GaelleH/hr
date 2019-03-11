@@ -84,6 +84,7 @@
                                     <th>Verlofjaar</th>
                                     <th>Gebruiker</th>
                                     <th>Officieel verlof</th>
+                                    <th>Overige verlofuren</th>
                                 </thead>
                                 <tbody>
                                     @foreach($years as $year)
@@ -94,6 +95,7 @@
                                             <td><a href="absences/{{$year->id}}">{{ $user->first_name }} {{ $user->last_name }}</a></td>
                                         @endforeach
                                         <td><a href="absences/{{$year->id}}">{{ $year->official_leave_hours }}</a></td>
+                                        <td><a href="absences/{{$year->id}}">{{ $year->official_leave_hours_remaining }}</a></td>
                                     </tr>
                                     @endforeach
                                     {{ $years->appends(['s' => $s])->links() }}

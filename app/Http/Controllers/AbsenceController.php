@@ -14,6 +14,7 @@ use Request;
 use DB;
 use Auth;
 use Mail;
+use Redirect;
 
 
 class AbsenceController extends Controller
@@ -80,24 +81,34 @@ class AbsenceController extends Controller
     {
         $validated = $request->validated();
 
-        //Create setting
-        $absence = new Absence;
-        $absence->absence_type_id = $request->input('absence_type_id');
-        $absence->absences_year_id = $request->input('absences_year_id');
-        $absence->remarks = $request->input('remarks');
-        $absence->user_id = $request->input('user_id');
-        $absence->status = 1;
-        $absence->save();
+        $remaining = AbsencesYear::where('id', '=', $request->input('absences_year_id'))
+            ->first();
 
         $data = Request::all();
-        
+        $cal = 0;
+
         foreach ($data['rows'] as $row) {
-            $items = new AbsenceDate([
-                'absence_id' => $absence->id,
-                'date' => $row['date'],
-                'number_of_hours' => $row['number_of_hours'],
-            ]);
-            $items->save();
+            $cal += $row['number_of_hours'];
+
+            if ($remaining->official_leave_hours_remaining > $cal) {
+                //Create setting
+                $absence = new Absence;
+                $absence->absence_type_id = $request->input('absence_type_id');
+                $absence->absences_year_id = $request->input('absences_year_id');
+                $absence->remarks = $request->input('remarks');
+                $absence->user_id = $request->input('user_id');
+                $absence->status = 1;
+                $absence->save();
+
+                $items = new AbsenceDate([
+                    'absence_id' => $absence->id,
+                    'date' => $row['date'],
+                    'number_of_hours' => $row['number_of_hours'],
+                ]);
+                $items->save();
+            } else {
+                return redirect()->back()->with('error', 'Er zijn niet voldoende overige uren om deze aanvraag in te dienen.');
+            }
         }
 
         $users = DB::table('role_user')
