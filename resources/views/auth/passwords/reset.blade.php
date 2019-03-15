@@ -10,7 +10,7 @@
                     
                     <span class="login100-form-title p-b-51" style="text-align:center">Reset password</span>
 
-                        <input type="hidden" name="token" value="{{ $token }}">
+                        <input type="text" name="token" value="{{ $token }}">
 
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} wrap-input100 validate-input m-b-16">
                             

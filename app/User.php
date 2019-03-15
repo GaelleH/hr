@@ -38,8 +38,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
-    public function abscencesYears() {
-        return $this->belongsToMany(abscencesYear::class);
+    public function years() {
+        return $this->belongsToMany(AbsencesYear::class);
     }
 
     public function functions() {

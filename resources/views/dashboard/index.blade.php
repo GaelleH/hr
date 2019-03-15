@@ -1,6 +1,7 @@
 @extends('layouts.back')
 
 @section('sidebar')
+@role('developer')
 <ul class="nav">
     <li class="active">
         <a href="{{ route('dashboard')}}">
@@ -45,11 +46,87 @@
         </a>
     </li>
 </ul>
+@endrole
+@role('management')
+<ul class="nav">
+    <li class="active">
+        <a href="{{ route('dashboard')}}">
+            <i class="pe-7s-graph"></i>
+            <p>Dashboard</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('absence.index')}}">
+            <i class="pe-7s-sun"></i>
+            <p>Afwezigheden</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('myAbsence')}}">
+            <i class="pe-7s-date"></i>
+            <p>Mijn afwezigheden</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('absences.index')}}">
+            <i class="pe-7s-drawer"></i>
+            <p>Verlofjaren</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('absence-types.index')}}">
+            <i class="pe-7s-ticket"></i>
+            <p>Afwezigheidstypes</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('users.index')}}">
+            <i class="pe-7s-users"></i>
+            <p>Gebruikers</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('user_functions.index')}}">
+            <i class="pe-7s-headphones"></i>
+            <p>Functies</p>
+        </a>
+    </li>
+</ul>
+@endrole
+@role('employee')
+<ul class="nav">
+    <li class="active">
+        <a href="{{ route('dashboard')}}">
+            <i class="pe-7s-graph"></i>
+            <p>Dashboard</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('myAbsence')}}">
+            <i class="pe-7s-date"></i>
+            <p>Mijn afwezigheden</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('absence-types.index')}}">
+            <i class="pe-7s-ticket"></i>
+            <p>Afwezigheidstypes</p>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('users.index')}}">
+            <i class="pe-7s-users"></i>
+            <p>Gebruikers</p>
+        </a>
+    </li>
+</ul>
+@endrole
 @endsection
 
 @section('content')
 <div class="content">
     <div class="container-fluid">
+        @if ($remaining)
         <div class="row">
             <div class="col-md-12">
                 <div class="alert test-alert-success" style="text-align:center">
@@ -58,6 +135,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <div class="row">
             @role('developer')
             <div class="col-md-6">

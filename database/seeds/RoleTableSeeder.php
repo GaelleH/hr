@@ -11,6 +11,19 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        \App\Role::insert([
+            'slug' => 'developer',
+            'name' => 'Developer',
+        ]);
+
+        \App\Role::insert([
+            'slug' => 'management',
+            'name' => 'Management',
+        ]);
+
+        \App\Role::insert([
+            'slug' => 'employee',
+            'name' => 'Medewerker',
+        ]);
     }
 }

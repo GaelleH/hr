@@ -44,7 +44,6 @@ class AbsenceController extends Controller
             $test[$absence->id] = implode(" - ", $dates);
             view()->share('test', $test);
         }
-        
 
         return view('absence.index')->with('absences', $absences);
     }
@@ -287,6 +286,9 @@ class AbsenceController extends Controller
             $test[$absence->id] = implode(" - ", $dates);
             view()->share('test', $test);
         }
+
+        $year = AbsencesYear::where('user_id', '=', Auth::user()->id)->first();
+        view()->share('year', $year);
 
         return view('absence.my_absence')->with('absences', $absences);
     }

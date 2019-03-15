@@ -43,11 +43,11 @@
 						</div>
 					</div>
 
-					<div class="form-group">
+					{{-- <div class="form-group">
 						<a class="txt1" href="{{ route('password.request') }}">
 							Forgot?
 						</a>
-					</div>
+					</div> --}}
 
 					{{-- <div class="form-group"> --}}
 						<div class="container-login100-form-btn m-t-17">

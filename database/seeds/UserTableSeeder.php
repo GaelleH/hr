@@ -11,6 +11,11 @@ class UserTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        \App\User::insert([
+            'first_name' => 'Gaelle',
+            'last_name' => 'Hardy',
+            'email' => 'gaelle_hardy1@hotmail.com',
+            'password' => bcrypt('Dutsvandezee94')
+        ]);
     }
 }

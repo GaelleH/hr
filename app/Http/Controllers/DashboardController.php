@@ -14,6 +14,7 @@ class DashboardController extends Controller
 {
     public function index() {
         $remaining = User::leftJoin('absences_years', 'users.id', '=', 'absences_years.user_id')
+            ->where('users.id', '=', Auth::user()->id)
             ->where('absences_years.year', '=', Carbon::now()->year)
             ->select('users.id', 'absences_years.official_leave_hours_remaining')
             ->first();
