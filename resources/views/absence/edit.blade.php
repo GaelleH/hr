@@ -150,9 +150,9 @@
                                     @role('employee')
                                     <div class="form-group">
                                         <label>Verlofjaar</label>
-                                        @foreach($years->users as $u)
+                                        @foreach($years as $year)
                                             <select class="form-control" name="absences_year_id" id="absences_year_id">
-                                                <option value="{{ $years->id }}" @if ($absence->absences_year_id == $years->id) selected @endif>{{ $years->year }} - {{ $u->first_name}} {{ $u->last_name }}</option>
+                                                <option value="{{ $year->id }}" @if ($absence->absences_year_id == $year->id) selected @endif>{{ $year->year }}</option>
                                             </select>
                                         @endforeach
                                     </div>
@@ -196,7 +196,6 @@
                             <div class="table-responsive">  
                                 <table class="table" id="dynamic_field">  
                                     <?php $count = 0; ?>
-                                    @if (!empty($items))
                                         @foreach ($dates as $date)
                                         <tr>  
                                             <td><input type="date" name="rows[<?= $count ?>][date]" class="form-control date_list" value="{{ $date->date }}" /></td>  
@@ -205,14 +204,6 @@
                                             <td><button type="button" name="add" id="add" class="btn btn-success"><i class="pe-7s-plus"></i></button></td>  
                                         </tr> 
                                         @endforeach 
-                                    @else
-                                        <tr>  
-                                            <td><input type="date" name="rows[<?= $count ?>][date]" class="form-control date_list" /></td>  
-                                            <td><input type="number" name="rows[<?= $count ?>][number_of_hours]" placeholder="Aantal uur" class="form-control date_list" /></td>  
-                                            <td><button type="button" name="remove" id="remove" class="btn btn-danger btn_remove"><i class="pe-7s-close-circle"></i></button></td>
-                                            <td><button type="button" name="add" id="add" class="btn btn-success"><i class="pe-7s-plus"></i></button></td>  
-                                        </tr>
-                                    @endif
                                     <?php $count++; ?>
                                 </table>  
                             </div>   

@@ -24,10 +24,8 @@ class UserUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'contract_start_date' => 'required|date',
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
-            'role_id' => 'required|integer',
         ];
     }
 
@@ -39,10 +37,8 @@ class UserUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'contract_start_date.required' => 'De contract startdatum is verplicht!',
             'first_name.required' => 'De voornaam is verplicht!',
             'last_name.required' => 'De achternaam is verplicht!',
-            'role_id.required' => 'De gebruikersrol is verplicht!',
         ];
     }
 }

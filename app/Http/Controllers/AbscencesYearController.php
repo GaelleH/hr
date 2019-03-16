@@ -61,6 +61,7 @@ class AbscencesYearController extends Controller
         $year->official_leave_hours = $request->input('official_leave_hours');
         $year->official_leave_hours_remaining = $request->input('official_leave_hours');
         $year->year = $request->input('year');
+        $year->user_id = $request->input('user_id');
         $year->save();
 
         $year->users()->attach($request->user_id);
@@ -111,6 +112,7 @@ class AbscencesYearController extends Controller
         $year->users()->detach();
         $year->official_leave_hours = $request->input('official_leave_hours');
         $year->year = $request->input('year');
+        $year->user_id = $request->input('user_id');
         $year->save();
 
         // $role = Role::with('users')->where('user_id', $id)->get();

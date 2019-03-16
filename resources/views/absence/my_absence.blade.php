@@ -128,11 +128,9 @@
     <div class="container-fluid">
         <div class="row">
             @include('layouts.messages')
-            @if($year)
-                <div class="col-md-6">
-                    <a href="{{ route('absence.create')}}" class="btn btn-info btn-fill">Nieuwe aanvraag toevoegen</a>
-                </div>
-            @endif
+            <div class="col-md-6">
+                <a href="{{ route('absence.create')}}" class="btn btn-info btn-fill">Nieuwe aanvraag toevoegen</a>
+            </div>
             
             <form action="{{ route('myAbsence') }}" method="GET">
                 <div class="form-group">

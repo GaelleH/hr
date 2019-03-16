@@ -137,7 +137,13 @@ class AbsenceController extends Controller
             });
         }
 
-        return redirect('/absence')->with('succes', 'Een nieuw aanvraag werd toegevoegd');
+        foreach(Auth::user()->roles as $role) {
+            if ($role->id === 3) {
+                return redirect('/my-absence')->with('succes', 'Een nieuw aanvraag werd toegevoegd');
+            } else {
+                return redirect('/absence')->with('succes', 'Een nieuw aanvraag werd toegevoegd');
+            }
+        }
     }
 
     /**
@@ -234,7 +240,13 @@ class AbsenceController extends Controller
             }
         }
 
-        return redirect('/absence')->with('succes', 'De afwezigheid werd aangepast');
+        foreach(Auth::user()->roles as $role) {
+            if ($role->id === 3) {
+                return redirect('/my-absence')->with('succes', 'De afwezigheid werd aangepast');
+            } else {
+                return redirect('/absence')->with('succes', 'De afwezigheid werd aangepast');
+            }
+        }
     }
 
     /**
@@ -257,7 +269,7 @@ class AbsenceController extends Controller
         $absence = Absence::find($id);
         $absence->delete();
 
-        return redirect('/absence')->with('succes', 'Het afwezigheidstype werd verwijderd');
+        return redirect('/absence')->with('succes', 'Het afwezighei werd verwijderd');
     }
 
     /**
