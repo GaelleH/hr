@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\UserFunction;
 use Illuminate\Http\Request;
 use DB;
+use App\Exports\UserFunctionsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserFunctionController extends Controller
 {
@@ -109,5 +111,16 @@ class UserFunctionController extends Controller
         $function->delete();
 
         return redirect('/user_functions')->with('succes', 'De functie werd verwijderd');
+    }
+
+    /**
+     * export a file in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function export() 
+    {
+        return Excel::download(new UserFunctionsExport, 'userFunctions.xlsx');
     }
 }

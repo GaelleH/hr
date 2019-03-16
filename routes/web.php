@@ -31,4 +31,7 @@ Route::get('/unapproved-absence', 'AbsenceController@unapprovedAbsences')->name(
 Route::get('/unapproved-absence/{id}', 'AbsenceController@absence')->name('toApprove');
 Route::post('/unapproved-absence/{id}', 'AbsenceController@notApproved')->name('notApproved');
 Route::put('/unapproved-absence/{id}', 'AbsenceController@approved')->name('approve');
+Route::get('/absence-type/export', 'AbsenceTypeController@export');
+Route::get('/user/export', 'UserController@export');
+Route::get('/user-function/export', 'UserFunctionController@export');
 Route::get('/changePassword','HomeController@showChangePasswordForm')->name('changePassword');

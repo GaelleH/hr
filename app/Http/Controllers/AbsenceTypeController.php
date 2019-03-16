@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\AbsenceType;
 use Illuminate\Http\Request;
 use DB;
+use App\Exports\AbsenceTypesExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AbsenceTypeController extends Controller
 {
@@ -115,5 +117,16 @@ class AbsenceTypeController extends Controller
         $type->delete();
 
         return redirect('/absence-types')->with('succes', 'Het afwezigheidstype werd verwijderd');
+    }
+
+    /**
+     * export a file in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function export() 
+    {
+        return Excel::download(new AbsenceTypesExport, 'absenceTypes.xlsx');
     }
 }

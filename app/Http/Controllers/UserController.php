@@ -9,6 +9,8 @@ use App\User;
 use App\UserFunction;
 use App\Role;
 use DB;
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -167,5 +169,16 @@ class UserController extends Controller
         $user->delete();
 
         return redirect('/users')->with('succes', 'De gebruiker werd verwijderd');
+    }
+
+    /**
+     * export a file in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function export() 
+    {
+        return Excel::download(new UsersExport, 'users.xlsx');
     }
 }
