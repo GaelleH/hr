@@ -129,15 +129,17 @@
         <div class="row">
             @include('layouts.messages')
             <div class="col-md-12">
-                @if($absence->status == 2)
-                    <div class="alert test-alert-success">
-                        <span><b><i class="pe-7s-smile"></i></b>  De aanvraag werd goedgekeurd</span>
-                    </div>
-                @endif
-                @if($absence->status == 3)
-                    <div class="alert test-alert-danger">
-                        <span><b><i class="pe-7s-bell"></i></b>  De aanvraag werd afgekeurd</span>
-                    </div>
+                @if($absence)
+                    @if($absence->status == 2)
+                        <div class="alert test-alert-success">
+                            <span><b><i class="pe-7s-smile"></i></b>  De aanvraag werd goedgekeurd</span>
+                        </div>
+                    @endif
+                    @if($absence->status == 3)
+                        <div class="alert test-alert-danger">
+                            <span><b><i class="pe-7s-bell"></i></b>  De aanvraag werd afgekeurd</span>
+                        </div>
+                    @endif
                 @endif
                 <div class="card">
                     <div class="header">

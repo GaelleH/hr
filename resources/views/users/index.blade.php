@@ -129,24 +129,34 @@
         <div class="row">
             @include('layouts.messages')
             <div class="col-md-4">
-
                 <a href="{{ route('users.create')}}" class="btn btn-info btn-fill">Nieuwe gebruiker toevoegen</a>
             </div>
-            
-            <form action="{{ route('users.index') }}" method="GET">
-                <div class="form-group">
-                    <div class="col-md-4">
-                        <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
-                    </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-default btn-fill" type="submit">Search</button>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card ">
+                    <div class="content">
+                        <div class="row">
+                            <form action="{{ route('users.index') }}" method="GET">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-default btn-fill" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <form action="{{url('/user/export')}}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-success" type="submit">Export</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
-            </form>
-            <div class="col-md-2">
-                <form action="{{url('/user/export')}}" enctype="multipart/form-data">
-                    <button class="btn btn-success" type="submit">Export</button>
-                </form>
             </div>
         </div>
         <div class="row">

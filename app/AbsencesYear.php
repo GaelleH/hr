@@ -14,4 +14,12 @@ class AbsencesYear extends Model
     public function users() {
         return $this->belongsToMany(User::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function absence() {
+        return $this->belongsTo(Absence::class);
+    }
 }

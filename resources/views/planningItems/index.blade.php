@@ -3,7 +3,7 @@
 @section('sidebar')
 @role('developer')
 <ul class="nav">
-    <li>
+    <li class="active">
         <a href="{{ route('dashboard')}}">
             <i class="pe-7s-graph"></i>
             <p>Dashboard</p>
@@ -27,7 +27,7 @@
             <p>Verlofjaren</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('absence-types.index')}}">
             <i class="pe-7s-ticket"></i>
             <p>Afwezigheidstypes</p>
@@ -49,7 +49,7 @@
 @endrole
 @role('management')
 <ul class="nav">
-    <li>
+    <li class="active">
         <a href="{{ route('dashboard')}}">
             <i class="pe-7s-graph"></i>
             <p>Dashboard</p>
@@ -73,7 +73,7 @@
             <p>Verlofjaren</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('absence-types.index')}}">
             <i class="pe-7s-ticket"></i>
             <p>Afwezigheidstypes</p>
@@ -95,7 +95,7 @@
 @endrole
 @role('employee')
 <ul class="nav">
-    <li>
+    <li class="active">
         <a href="{{ route('dashboard')}}">
             <i class="pe-7s-graph"></i>
             <p>Dashboard</p>
@@ -107,7 +107,7 @@
             <p>Mijn afwezigheden</p>
         </a>
     </li>
-    <li class="active">
+    <li>
         <a href="{{ route('absence-types.index')}}">
             <i class="pe-7s-ticket"></i>
             <p>Afwezigheidstypes</p>
@@ -124,74 +124,37 @@
 @endsection
 
 @section('content')
+<?php
+use Carbon\Carbon; 
+?>
+<link href="{{ asset('css/planning/fullcalendar/fullcalendar.min.css')}}" rel="stylesheet" />
+<link href="{{ asset('css/planning/sheduler/scheduler.min.css')}}" rel="stylesheet" />
+<script src="{{ asset('js/jquery.3.2.1.min.js')}}" type="text/javascript" defer></script>
+<script src="{{ asset('js/planning/fullcalendar/moment.min.js')}}" defer></script>
+<script src="{{ asset('js/planning/fullcalendar/jquery-ui.min.js')}}" defer></script>
+<script src="{{ asset('js/planning/fullcalendar/fullcalendar.min.js')}}" defer></script>
+<script src="{{ asset('js/planning/sheduler/scheduler.min.js')}}" defer></script>
+<script src="{{ asset('js/planning/fullcalendar/locale/nl-be.js')}}" defer></script>
+
 <div class="content">
     <div class="container-fluid">
         <div class="row">
             @include('layouts.messages')
-            <div class="col-md-4">
-                @role('developer')
-                    <a href="{{ route('absence-types.create')}}" class="btn btn-info btn-fill">Nieuw afwezigheidstype toevoegen</a>
-                @endrole
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card ">
-                    <div class="content">
-                        <div class="row">
-                            <form action="{{ route('absence-types.index') }}" method="GET">
-                                <div class="form-group">
-                                    <div class="col-md-4">
-                                        <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <button class="btn btn-default btn-fill" type="submit">Search</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <form action="{{url('/absence-type/export')}}" enctype="multipart/form-data">
-                                <div class="form-group">
-                                    <div class="col-md-2">
-                                        <button class="btn btn-success" type="submit">Export</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-plain">
                     <div class="header">
-                        <h4 class="title">Afwezigheidstypes</h4>
-                        <p class="category"></p>
+                        <h4 class="title">Planning</h4>
                     </div>
-                    @if(count($types) > 0)
-                    <div class="content table-responsive table-full-width">
-                        <table class="table table-hover">
-                            <thead>
-                                <th>ID</th>
-                                <th>Naam</th>
-                            </thead>
-                            <tbody>
-                                @foreach($types as $type)
-                                <tr>
-                                    <td><a href="absence-types/{{$type->id}}">{{ $type->id }}</a></td>
-                                    <td><a href="absence-types/{{$type->id}}">{{ $type->name }}</a></td>
-                                </tr>
-                                @endforeach
-                                {{ $types->appends(['s' => $s])->links() }}
-                            </tbody>
-                        </table>
-                    </div> 
-                    @else
-                        Geen afwezigheidstypes beschikbaar
-                    @endif
+                    <div class="content">
+                        {{-- <div id="calendar"></div> --}}
+                        {!! $calendar->calendar() !!}
+                        {!! $calendar->script() !!}
+                    </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 </div>
 @endsection

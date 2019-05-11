@@ -124,6 +124,7 @@
 @endsection
 
 @section('content')
+<?php use Carbon\Carbon; ?>
 <div class="content">
     <div class="container-fluid">
         <div class="row">
@@ -131,8 +132,43 @@
             <div class="col-md-6">
                 <a href="{{ route('absence.create')}}" class="btn btn-info btn-fill">Nieuwe aanvraag toevoegen</a>
             </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="content">
+                        <div class="row">
+                            <form action="{{ route('myAbsence') }}" method="GET">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-default btn-fill" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <form action="{{url('/my-absence/export')}}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-success" type="submit">Export</button>
+                                    </div>
+                                </div>
+                            </form>
+                            {{-- <form action="{{url('/absence-year/export-this-year')}}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-success" type="submit">Exporteer </button>
+                                    </div>
+                                </div>
+                            </form> --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
             
-            <form action="{{ route('myAbsence') }}" method="GET">
+            {{-- <form action="{{ route('myAbsence') }}" method="GET">
                 <div class="form-group">
                 <div class="col-md-4">
                     <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
@@ -143,7 +179,7 @@
                 </div>
                 </div>
             </form>
-        </div>
+        </div> --}}
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-plain">

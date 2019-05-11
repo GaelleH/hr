@@ -15,6 +15,10 @@ use DB;
 use Auth;
 use Mail;
 use Redirect;
+use App\Exports\AbsencesExport;
+use App\Exports\AbsencesGeneralExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 
 class AbsenceController extends Controller
@@ -110,32 +114,32 @@ class AbsenceController extends Controller
             }
         }
 
-        $users = DB::table('role_user')
-            ->leftJoin('users', 'role_user.user_id', '=', 'users.id')
-            ->where('role_user.role_id', '=', 2)
-            ->select('role_user.role_id', 'users.first_name', 'users.last_name', 'users.email')
-            ->get();
+        // $users = DB::table('role_user')
+        //     ->leftJoin('users', 'role_user.user_id', '=', 'users.id')
+        //     ->where('role_user.role_id', '=', 2)
+        //     ->select('role_user.role_id', 'users.first_name', 'users.last_name', 'users.email')
+        //     ->get();
 
-        foreach ($users as $user) {
+        // foreach ($users as $user) {
 
-            $mail = $user->email;
-            $name = $user->first_name;
+        //     $mail = $user->email;
+        //     $name = $user->first_name;
             
-            $data = array(
-                'email' => $mail,
-                'name' => $name,
-                'remark' => $absence->extra_remarks,
-            );
-            // Path or name to the blade template to be rendered
-            $template_path = 'request_new';
+        //     $data = array(
+        //         'email' => $mail,
+        //         'name' => $name,
+        //         'remark' => $absence->extra_remarks,
+        //     );
+        //     // Path or name to the blade template to be rendered
+        //     $template_path = 'request_new';
             
-            Mail::send($template_path, $data, function($message) use ($mail, $name) {
-                // Set the receiver and subject of the mail.
-                $message->to($mail, $name)->subject('Nieuwe verlofaanvraag');
-                // Set the sender
-                $message->from('gaelle_hardy1@hotmail.com','HR');
-            });
-        }
+        //     Mail::send($template_path, $data, function($message) use ($mail, $name) {
+        //         // Set the receiver and subject of the mail.
+        //         $message->to($mail, $name)->subject('Nieuwe verlofaanvraag');
+        //         // Set the sender
+        //         $message->from('gaelle_hardy1@hotmail.com','HR');
+        //     });
+        // }
 
         foreach(Auth::user()->roles as $role) {
             if ($role->id === 3) {
@@ -180,6 +184,7 @@ class AbsenceController extends Controller
         $absence = Absence::find($id);
         $users = User::all();
         $years = AbsencesYear::with('users')->where('user_id', auth::user()->id)->get();
+        dump($years);
         $allYears = AbsencesYear::leftJoin('users', 'absences_years.user_id', '=', 'users.id')
             ->select('absences_years.id', 'absences_years.year', 'users.first_name', 'users.last_name')
             ->get();
@@ -447,5 +452,27 @@ class AbsenceController extends Controller
         });
 
         return redirect('/unapproved-absence')->with('succes', 'De aanvraag werd afgekeurd');
+    }
+
+    /**
+     * export a file in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function export() 
+    {
+        return Excel::download(new AbsencesExport(Auth::user()->id), 'absences.xlsx');
+    }
+
+    /**
+     * export a file in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function exportThisYear() 
+    {
+        return Excel::download(new AbsencesGeneralExport, 'absences_this_year.xlsx');
     }
 }

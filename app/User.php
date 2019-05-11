@@ -39,7 +39,11 @@ class User extends Authenticatable
     }
 
     public function years() {
-        return $this->belongsToMany(AbsencesYear::class);
+        return $this->hasMany(AbsencesYear::class);
+    }
+
+    public function absences() {
+        return $this->hasMany(Absence::class);
     }
 
     public function functions() {

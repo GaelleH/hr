@@ -9,7 +9,9 @@ use App\AbsencesYear;
 use App\User;
 use App\UserFunction;
 use DB;
-
+use App\Exports\AbsenceYearsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class AbscencesYearController extends Controller
 {
@@ -134,5 +136,27 @@ class AbscencesYearController extends Controller
         $year->delete();
 
         return redirect('/absences')->with('succes', 'Het verlofjaar werd verwijderd');
+    }
+
+    /**
+     * export a file in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function exportThisYear() 
+    {
+        return Excel::download(new AbsenceYearsExport(Carbon::now()->year), 'absenceYears'.Carbon::now()->year.'.xlsx');
+    }
+
+    /**
+     * export a file in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function exportLastYear() 
+    {
+        return Excel::download(new AbsenceYearsExport(Carbon::now()->subYears(1)->year), 'absenceYears'.Carbon::now()->subYears(1)->year.'.xlsx');
     }
 }

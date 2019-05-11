@@ -188,7 +188,7 @@
                                         @endif
                                     </div> --}}
                                     <div class="form-group">
-                                        <label>Email</label>
+                                        <label>Paswoord</label>
                                         <input type="password" class="form-control" name="password" id="password" placeholder="Paswoord">
                                         <small>Laat dit veld leeg om het paswoord niet te veranderen.</small>
                                     </div>

@@ -131,19 +131,35 @@
             <div class="col-md-6">
                 <a href="{{ route('absence.create')}}" class="btn btn-info btn-fill">Nieuwe aanvraag toevoegen</a>
             </div>
-
-            <form action="{{ route('absence.index') }}" method="GET">
-                <div class="form-group">
-                <div class="col-md-4">
-                    <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
-                </div>
-                <div class="col-md-2">
-
-                    <button class="btn btn-default btn-fill" type="submit">Search</button>
-                </div>
-                </div>
-            </form>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card ">
+                    <div class="content">
+                        <div class="row">
+                            <form action="{{ route('absence.index') }}" method="GET">
+                                <div class="form-group">
+                                    <div class="col-md-4">
+                                        <input type="text" name="s" class="form-control" value="{{ isset($s) ? $s : '' }}"/>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button class="btn btn-default btn-fill" type="submit">Search</button>
+                                    </div>
+                                </div>
+                            </form>
+                            {{-- <form action="{{url('/test/export-this-year')}}" enctype="multipart/form-data">
+                                <div class="form-group">
+                                    <div class="col-md-2">
+                                        <button class="btn btn-success" type="submit">Export</button>
+                                    </div>
+                                </div>
+                            </form> --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row">
             <div class="col-md-12">
                 <div class="card card-plain">

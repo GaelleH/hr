@@ -3,8 +3,9 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\AbsencesYear;
 use App\AbsenceType;
+use App\AbsencesYear;
+use App\AbsenceDate;
 
 class Absence extends Model
 {
@@ -15,15 +16,19 @@ class Absence extends Model
         ->orWhere('name', 'like', '%' .$s. '%');
     }
 
-    public function users() {
+    public function user() {
         return $this->belongsTo(User::class);
     }
 
-    // public function absenceDates() {
-    //     return $this->belongsToMany(AbsencesYear::class);
-    // }
+    public function absenceDates() {
+        return $this->hasMany(AbsenceDate::class);
+    }
 
-    // public function absenceTypes() {
-    //     return $this->belongsTo(AbsenceType::class);
-    // }
+    public function absenceType() {
+        return $this->belongsTo(AbsenceType::class);
+    }
+
+    public function absencesYear() {
+        return $this->belongsTo(AbsencesYear::class);
+    }
 }

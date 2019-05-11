@@ -17,4 +17,8 @@ class AbsenceDate extends Model
     protected $fillable = [
         'date', 'number_of_hours', 'absence_id'
     ];
+
+    public function absence() {
+        return $this->belongsTo(Absence::class);
+    }
 }
